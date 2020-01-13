@@ -1,6 +1,6 @@
 # haskell-src-transformation
 
-This tool was implemented as part of a bachelor thesis (by Malte Clement at Kiel University).
+This tool was implemented as part of a bachelor thesis (by Malte Clement at Kiel University) and should be considered as a __alpha version of a prototype__.
 
 # Haskell to Haskell Transformation Tool
 
@@ -19,9 +19,7 @@ This is a tool to translate different language features of Haskell into simpler 
 
 ## Repository
 
-The repository consists of three directories
-
-* `LaTeX` contains the thesis that describes the implementation and the transformations
+The repository consists of two directories
 
 * `src` contains the source code of the project
 
