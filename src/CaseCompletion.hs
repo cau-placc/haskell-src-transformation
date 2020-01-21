@@ -52,14 +52,6 @@ getEqFromAlt :: Alt () -> Eqs
 getEqFromAlt (Alt _ pat (UnGuardedRhs _ expr) _) = ([pat], expr)
 getEqFromAlt _                                   = error "guarded Rhs in getEqFromAlt"
 
-isVarOrWildPat :: Pat () -> Bool
-isVarOrWildPat (PVar _ _ )   = True
-isVarOrWildPat (PWildCard _) = True
-isVarOrWildPat _             = False
-
-selectPat :: Alt () -> Pat ()
-selectPat (Alt _ p _ _) = p
-
 completeLambda :: [Pat ()] -> Exp () -> Bool -> PM (Exp ())
 completeLambda ps e insideLet = do
                          xs <- newVars (length ps)
@@ -85,14 +77,14 @@ applyCCDecl insideLet (PatBind _ p r _) = if isPVar p
 applyCCDecl _         v                 = return v
 
 applyCCMatches ::Bool -> [Match ()] -> PM ([Match ()])
-applyCCMatches insideLet = mapM (applyCCMatch insideLet)
+applyCCMatches insideLet = mapM applyCCMatch
  where
-  applyCCMatch :: Bool -> Match () -> PM (Match ()) -- TODO maybe only apply if needed -> isIncomplete?
-  applyCCMatch insideLet (Match _ n ps rhs _) = case rhs of
+  applyCCMatch :: Match () -> PM (Match ()) -- TODO maybe only apply if needed -> isIncomplete?
+  applyCCMatch (Match _ n ps rhs _) = case rhs of
     UnGuardedRhs _ e -> do x <- completeCase insideLet e
                            return $ Match () n ps (UnGuardedRhs () x) B.noBinds
     GuardedRhss _ _  -> error "applyCCMatch: GuardedRhs found"
-  applyCCMatch insideLet  (InfixMatch _ p n ps rhs _) = case rhs of
+  applyCCMatch (InfixMatch _ p n ps rhs _) = case rhs of
     UnGuardedRhs _ e -> do x <- completeCase insideLet e
                            return $ InfixMatch () p n ps (UnGuardedRhs () x) B.noBinds
     GuardedRhss _ _  -> error "applyCCMatch: GuardedRhs found"

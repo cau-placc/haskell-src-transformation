@@ -168,12 +168,12 @@ createAltsFromConstr :: Pat ()        -- variable from case exp
 createAltsFromConstr x cs er = mapM (createAltFromConstr x er) cs
  where
   createAltFromConstr :: Pat () ->  Exp () -> Constructor -> PM (Alt ())
-  createAltFromConstr x e (qn,ar,b) = do
+  createAltFromConstr pat e (qn,ar,b) = do
     nvars <- (newVars ar)
     let p = if b then (PInfixApp () (nvars!!0) qn (nvars!!1)) else (PApp () qn nvars)
         p' = translateApp p
-        x' = translatePVar x
-        e' = substitute (tSubst x' p') e
+        pat' = translatePVar pat
+        e' = substitute (tSubst pat' p') e
     return (B.alt p e')
 
 -- |The function newVars generates a list of new Variables with IDs from
@@ -238,19 +238,18 @@ computeAlt :: Pat ()               -- variable from case exp
            -> [Eqs]                -- one group to match
            -> PM (Alt ())          -- one group
 computeAlt _ _  _  []         = error "computeAlt with empty eqs"
-computeAlt x vs er prps@(p:_) = do (capp , nvars, _ ) <- getConst (firstPat p)  -- oldpats need to be computed for each pattern
-                                   nprps <- mapM f prps
-                                   let sub  = tSubst (translatePVar x) (translateApp capp)
-                                   res  <- match (nvars++vs) nprps (substitute sub er)
-                                   let res' = substitute sub res
-                                   return (B.alt capp res')
+computeAlt pat pats er prps@(p:_) = do
+  (capp , nvars, _ ) <- getConst (firstPat p)  -- oldpats need to be computed for each pattern
+  nprps <- mapM f prps
+  let sub  = tSubst (translatePVar pat) (translateApp capp)
+  res  <- match (nvars ++ pats) nprps (substitute sub er)
+  let res' = substitute sub res
+  return (B.alt capp res')
  where
   f :: Eqs ->  PM (Eqs)
   f ([] , r) = return ([],r) -- potentially unused
-  f (x:xs,r) = do (_,_,oldpats) <- getConst x
-                  return (oldpats ++ xs,r)
-  g :: TSubst () -> Eqs -> Eqs
-  g ts (xs ,r) = (xs, substitute ts r)
+  f (v:vs,r) = do (_,_,oldpats) <- getConst v
+                  return (oldpats ++ vs,r)
 
 -- |The function 'translateApp' takes a pattern representing a constructor application
 -- and transforms it into an expression with the same constructor applied to translated
@@ -260,6 +259,7 @@ translateApp (PApp _ qn ps)         = foldl (\acc x -> (App () acc (translatePVa
 translateApp (PInfixApp _ p1 qn p2) = InfixApp () (translatePVar p1) (QConOp () qn) (translatePVar p2)
 translateApp (PTuple _ bxd ps)      = Tuple () bxd $ map translatePVar ps
 translateApp (PList _ ps)           = List () $ map translatePVar ps
+translateApp pat                    = error ("translateApp does not support: " ++ show pat)
 
 -- TODO refactor into 2 functions. one for the capp and nvars and one for the oldpats
 -- |The function 'getConst' takes a constructor or wildcard pattern  and returns a triple
@@ -398,9 +398,9 @@ cheatEq  q1        q2                                         = q1 == q2
 
 -- |The function 'selectPats' selects all patterns from a constructor pattern
 selectPats :: Pat () -> [Pat ()]
-selectPats (PApp _ qname pats)    = pats
-selectPats (PInfixApp _ p1 qn p2) = [p1,p2]
-selectPats p                      = error $ "selectPat: not definied for " ++ show p
+selectPats (PApp _ _ pats)       = pats
+selectPats (PInfixApp _ p1 _ p2) = [p1,p2]
+selectPats p                     = error $ "selectPat: not definied for " ++ show p
 
 -- |The function 'selectExp' selects an expression from a given unguarded righthandside
 selectExp :: Rhs () -> Exp ()

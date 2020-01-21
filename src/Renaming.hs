@@ -122,9 +122,9 @@ renamePVar (PVar l name) = do nname <- newName name
 renamePVar _             = error "no variable in renamePVar"
 
 newName :: Name l -> PM (Name l)                                                -- TODO if then else redundand
-newName (Ident l str) = do var   <- freshVar
-                           return (Ident l ('a':show var))
-newName _              = error "no Ident in newName"
+newName (Ident l _) = do var   <- freshVar
+                         return (Ident l ('a':show var))
+newName _           = error "no Ident in newName"
 
 genVar :: PM (Name ())
 genVar = do x <- freshVar

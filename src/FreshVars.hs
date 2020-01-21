@@ -1,10 +1,11 @@
 module FreshVars (module FreshVars
-                  , gets
-                  , modify
-                  , runState
-                  , evalState) where                                                   -- import Control.MonadState
+                  , State.gets
+                  , State.modify
+                  , State.runState
+                  , State.evalState) where                                                   -- import Control.MonadState
 
-import           Control.Monad.State
+import           Control.Monad.State          (State)
+import qualified Control.Monad.State          as State
 import qualified Language.Haskell.Exts.Syntax as S
 
 type Constructor = (S.QName (),Int,Bool) -- QName instead of String to support special Syntax
@@ -30,16 +31,16 @@ type PM a = State PMState a
 
 freshVar :: PM Int
 freshVar = do
-  i <- gets nextId
-  modify $ \state -> state { nextId = i + 1 }
+  i <- State.gets nextId
+  State.modify $ \state -> state { nextId = i + 1 }
   --debug <- gets debugOutput
   --modify $ \state -> state {debugOutput = "Generated"++ show i ++", "++debug}
   return i
 
 addConstrMap :: (String, [Constructor]) -> PM ()
 addConstrMap cs = do
-  cmap <- gets constrMap
-  modify $ \state -> state {constrMap = (cs:cmap)}
+  cmap <- State.gets constrMap
+  State.modify $ \state -> state {constrMap = (cs:cmap)}
     {- renameFunc :: FuncDecl -> FreshVar FuncDecl
     renameFunc (Func ...) = do
       i <- freshVar
@@ -50,5 +51,5 @@ addConstrMap cs = do
 
 addDebug :: String -> PM ()
 addDebug s = do
-  debug <- gets debugOutput
-  modify $ \state -> state {debugOutput = (s ++ debug)}
+  debug <- State.gets debugOutput
+  State.modify $ \state -> state {debugOutput = (s ++ debug)}

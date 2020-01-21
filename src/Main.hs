@@ -1,9 +1,9 @@
 module Main ( defaultOptions
             , main) where
 
+import           Application
 import           FreshVars
 import           Language.Haskell.Exts
-import           Application
 import           System.Console.GetOpt
 import           System.Environment
 import           System.FilePath
