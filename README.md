@@ -32,18 +32,38 @@ The tool is written in Haskell and uses Cabal to manage the dependencies. To bui
 
 ## Installation
 
-In order to install the library and the executable navigate to the root directory of the project and run
+### Executable
+
+In order to install the command line interface navigate to the root directory of the project and run
 
 ```bash
-cabal install CodeTransformation
+cabal new-install exe:haskell-src-transformations
+```
+
+You can also run the executable directly without installing it first.
+
+```bash
+cabal new-run exe:haskell-src-transformations -- [options...]
+```
+
+### Library
+
+The library provided by this package is not yet available on Hackage.
+In order to use the Haskell code transformations in your own project, add the following stanza to your `cabal.project` file.
+
+```cabal
+source-repository-package
+  type: git
+  location: git://github.com/FreeProving/haskell-src-transformations.git
+  tag: v0.1.0.0
 ```
 
 ## Usage
 
-To transform a Haskell module navigate to `./dist/build` and run
+To transform a Haskell module, install the command line interface as described above and run the following command.
 
 ```bash
-CodeTransformation -I [InputFile]
+haskell-src-transformations -I [InputFile]
 ```
 
 The generated code is printed to the console. If you want to specify the output directory use the `-o` flag.
