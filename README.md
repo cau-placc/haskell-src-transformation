@@ -19,9 +19,8 @@ The repository consists of two directories
 * `src` contains the source code of the project
 
   * `src/test` contains modules that have been translated to test certain features
-  * `src/Examples` contains two modules which can be used for local debugging with the `Application.hs` module containing a `test`-function to work with these local modules.
 
-* `Examples` contains some examples that have been transformed by hand using Wadler's algorithm.
+* `example` contains some examples that have been transformed by hand using Wadler's algorithm.
 
   Additionally, it contains some special examples that were used to test the [haskell-to-coq-compiler](https://git.informatik.uni-kiel.de/stu203400/haskell-to-coq-compiler)
 
