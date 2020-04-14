@@ -28,7 +28,11 @@ The repository consists of two directories
 
 ## Required Software
 
-The tool is written in Haskell and uses Cabal to manage the dependencies. To build it, the GHC and Cabal are required. The tool has been tested with [GHC](https://www.haskell.org/ghc/), version  8.4.3 and [Cabal](https://www.haskell.org/cabal/), version 2.2.0.1.
+The tool is written in Haskell and uses Cabal to manage the dependencies. To build it, the GHC and Cabal are required.
+The tool has been tested with the following software versions.
+
+ - [GHC](https://www.haskell.org/ghc/), version  8.6.5
+ - [Cabal](https://www.haskell.org/cabal/), version 2.4.1.0
 
 ## Installation
 
