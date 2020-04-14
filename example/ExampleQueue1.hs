@@ -9,7 +9,7 @@ isEmpty :: Queue a -> Bool
 isEmpty q = null q
 
 front :: Queue a -> a
-front (x:q) = x
+front (x : q) = x
 
 add :: a -> Queue a -> Queue a
 add x q = q ++ [x]

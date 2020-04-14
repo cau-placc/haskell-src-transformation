@@ -1,7 +1,6 @@
 module Spec where
 
-import Test.Hspec
+import           Test.Hspec
 
 main :: IO ()
-main = hspec $
-  return ()
+main = hspec $ return ()

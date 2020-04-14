@@ -19,11 +19,11 @@ notTR False = True
 -- guard on case-level without order
 notC :: Bool -> Bool
 notC b = case b of
-           x | x         -> False
-             | otherwise -> True
+  x | x         -> False
+    | otherwise -> True
 
 -- guard on case-level with rule order
 notCR :: Bool -> Bool
 notCR b = case b of
-            x | x -> False
-            False -> True
+  x | x -> False
+  False -> True
