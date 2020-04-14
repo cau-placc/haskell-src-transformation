@@ -35,7 +35,7 @@ match [] (([], e) : _) _  = return e              -- Rule 3a
 match [] []            er = return er             -- Rule 3b
 match vars@(x : xs) eqs er
   | allVars eqs = do
-    eqs' <- (mapM (substVars x) eqs)
+    eqs' <- mapM (substVars x) eqs
     match xs eqs' er
   |  -- Rule 1
     allCons eqs = makeRhs x xs eqs er
@@ -47,7 +47,7 @@ match [] _ _ = error "match with non-fitting args"
 -- pattern and an expression and renames all occurences of the first variable from
 -- the list in the expression into 'pv'.
 substVars :: Pat () -> Eqs -> PM Eqs  -- Variable Pattern
-substVars pv ((p : ps), e) = do
+substVars pv (p : ps, e) = do
   s1 <- getPVarName p
   s2 <- getPVarName pv
   let sub = subst s1 s2
@@ -75,7 +75,7 @@ getPVarName x = error $ "getPVarName: tried to get Pattern " ++ show x
 -- The grouping is stable.
 groupPat :: [Eqs] -> [[Eqs]]
 groupPat = groupBy ordPats
-  where ordPats (x, _) (y, _) = isPVar (head x) && (isPVar (head y))
+  where ordPats (x, _) (y, _) = isPVar (head x) && isPVar (head y)
 
 isPVar :: Pat () -> Bool
 isPVar (PVar _ _) = True
@@ -152,7 +152,7 @@ findCons
   -> [QName ()]
   -> [Constructor]
 findCons cons usedcons =
-  filter (\con -> not (elem (getConstrName con) usedcons)) cons
+  filter (\con -> getConstrName con `notElem` usedcons) cons
 
 -- | The function 'findDataType' takes a constructor name and a constructor map
 -- and returns the datatype for the constructor if the type is part of the map.
@@ -161,7 +161,7 @@ findDataType
   -> [(String, [Constructor])]  -- [(Datatype, [(Konstruktor,Arität)])]
   -> (String, [Constructor])     -- Datatype
 findDataType cname = foldr
-  (\c sc -> if elem cname (map getConstrName (snd c)) then c else sc)
+  (\c sc -> if cname `elem` map getConstrName (snd c) then c else sc)
   (error "no data Type") -- todo fst und snd als synonym
 
 -- | The function 'getQName' returns the name of the constructor from a case alternative.
@@ -173,9 +173,9 @@ getQName (Alt _ p _ _) = getQNamePat p
 getQNamePat :: Pat () -> QName ()
 getQNamePat (PApp _ qn _       ) = qn
 getQNamePat (PInfixApp _ _ qn _) = qn
-getQNamePat (PList _ _         ) = (Special () (ListCon ()))
-getQNamePat (PWildCard _       ) = (Special () (ExprHole ()))
-getQNamePat (PTuple _ bxd ps   ) = (Special () (TupleCon () bxd (length ps)))
+getQNamePat (PList _ _         ) = Special () (ListCon ())
+getQNamePat (PWildCard _       ) = Special () (ExprHole ())
+getQNamePat (PTuple _ bxd ps   ) = Special () (TupleCon () bxd (length ps))
 getQNamePat _                    = error "getQNamePat unsuported Pattern"
 
                                                                                 -- TODO refactor with smartcons
@@ -190,10 +190,9 @@ createAltsFromConstr x cs er = mapM (createAltFromConstr x er) cs
  where
   createAltFromConstr :: Pat () -> Exp () -> Constructor -> PM (Alt ())
   createAltFromConstr pat e (qn, ar, b) = do
-    nvars <- (newVars ar)
-    let p = if b
-          then (PInfixApp () (nvars !! 0) qn (nvars !! 1))
-          else (PApp () qn nvars)
+    nvars@[nvar0, nvar1] <- newVars ar
+    let p | b         = PInfixApp () nvar0 qn nvar1
+          | otherwise = PApp () qn nvars
         p'   = translateApp p
         pat' = translatePVar pat
         e'   = substitute (tSubst pat' p') e
@@ -213,7 +212,7 @@ newVars n = do
 newVar :: PM (Pat ())
 newVar = do
   nv <- freshVar
-  let v = 'a' : (show nv)
+  let v = 'a' : show nv
   return (B.pvar (name v))
 
 -- | The function 'groupByCons' groups a list of equations into a list of alternating
@@ -269,7 +268,7 @@ computeAlt pat pats er prps@(p : _) = do
   let res' = substitute sub res
   return (B.alt capp res')
  where
-  f :: Eqs -> PM (Eqs)
+  f :: Eqs -> PM Eqs
   f ([]    , r) = return ([], r) -- potentially unused
   f (v : vs, r) = do
     (_, _, oldpats) <- getConst v
@@ -280,7 +279,7 @@ computeAlt pat pats er prps@(p : _) = do
 -- variables.
 translateApp :: Pat () -> Exp ()
 translateApp (PApp _ qn ps) =
-  foldl (\acc x -> (App () acc (translatePVar x))) (Con () qn) ps
+  foldl (\acc x -> App () acc (translatePVar x)) (Con () qn) ps
 translateApp (PInfixApp _ p1 qn p2) =
   InfixApp () (translatePVar p1) (QConOp () qn) (translatePVar p2)
 translateApp (PTuple _ bxd ps) = Tuple () bxd $ map translatePVar ps
@@ -294,23 +293,23 @@ translateApp pat = error ("translateApp does not support: " ++ show pat)
 getConst :: Pat () -> PM (Pat (), [Pat ()], [Pat ()])
 getConst (PApp _ qname ps) = do
   nvars <- newVars (length ps)
-  return ((PApp () qname nvars), nvars, ps)
+  return (PApp () qname nvars, nvars, ps)
 getConst (PInfixApp _ p1 qname p2) = do
   nvars <- newVars 2
   let [nv1, nv2] = nvars
       ps         = [p1, p2]
-  return ((PInfixApp () nv1 qname nv2), nvars, ps)
+  return (PInfixApp () nv1 qname nv2, nvars, ps)
 getConst (PParen _ p) = getConst p
 getConst (PList _ ps)
-  | length ps >= 1 = do
+  | null ps = return (PList () [], [], [])
+  | otherwise = do
     let (n : nv) = ps
         listCon  = Special () $ Cons ()
     getConst (PInfixApp () n listCon (PList () nv))
-  | length ps == 0 = return ((PList () []), [], [])
 getConst (PTuple _ bxd ps) = do
   nvars <- newVars (length ps)
-  return ((PTuple () bxd nvars), nvars, ps)
-getConst (PWildCard _) = return ((PWildCard ()), [], [])              -- wildcards no longer needed as cons
+  return (PTuple () bxd nvars, nvars, ps)
+getConst (PWildCard _) = return (PWildCard (), [], [])              -- wildcards no longer needed as cons
 getConst _             = error "wrong Pattern in getConst"
 
 -- |The function 'allVars' determines if every pattern list in a list of equations
@@ -426,9 +425,9 @@ renameAndOpt pat alts =
         [] ->
           error
             $  "Found in case but not found in alts : Tried"
-            ++ (show patQ)
+            ++ show patQ
             ++ " Searched in "
-            ++ (show (map fst aPaR))
+            ++ show (map fst aPaR)
         ((p, r) : _) -> do
           let e  = selectExp r
               p1 = selectPats pat
@@ -480,7 +479,7 @@ addAndOpt e alts = do
     modify $ \state -> state { matchedPat = (v, p) : stack }
     alt' <- optimizeAlt a
     modify $ \state -> state { matchedPat = stack }
-    return $ alt'
+    return alt'
 
 
 optimizeAlts :: [Alt ()] -> PM [Alt ()]

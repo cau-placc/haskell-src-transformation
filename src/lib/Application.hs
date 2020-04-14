@@ -26,11 +26,11 @@ useAlgoDecl (FunBind _ ms) = do
 useAlgoDecl v = return v
 
 -- TODO maybe refactor to fun decl or check if oneFun stuff is needed or always true
-useAlgoMatches :: [Match ()] -> PM ([Match ()])
+useAlgoMatches :: [Match ()] -> PM [Match ()]
 useAlgoMatches []       = return []
 useAlgoMatches (m : ms) = do
   let (oneFun, r) = span (GE.comp m) ms
-  if (length oneFun) >= 1 || hasCons (m : oneFun)
+  if not (null oneFun) || hasCons (m : oneFun)
     then do
       x  <- useAlgo (m : oneFun)
       xs <- useAlgoMatches r
@@ -79,9 +79,8 @@ addG = maybe (return ())
 -- declarations into the State with their name and constructors.
 collectDataInfo :: Module () -> PM ()
 collectDataInfo (Module _ _ _ _ decls) = do
-  mas <- sequence (map collectDataDecl decls)
+  mas <- mapM collectDataDecl decls
   mapM_ (addG addConstrMap) mas
-  return ()
 collectDataInfo _ = return ()
 
 -- |The function 'collectDataDecl' takes a Declaration and returns a pair of
@@ -89,7 +88,7 @@ collectDataInfo _ = return ()
 -- Returns Nothing otherwise.
 collectDataDecl :: Decl () -> PM (Maybe (String, [Constructor]))
 collectDataDecl (DataDecl _ (DataType _) _ dhead qcdecls _) =
-  return $ Just ((getDataName dhead), (map getDataCons qcdecls))
+  return $ Just (getDataName dhead, map getDataCons qcdecls)
 collectDataDecl _ = return Nothing
 
 -- |The function 'getDataName' takes a DeclHead and returns a string with the
@@ -122,8 +121,7 @@ processModule m = do
   collectDataInfo m                                                          -- TODO  maybe unused
   eliminatedM    <- GE.applyGEModule m
   caseCompletedM <- CC.applyCCModule eliminatedM
-  nm             <- useAlgoModule caseCompletedM
-  return nm
+  useAlgoModule caseCompletedM
 
 -- | 'specialCons' is a map for the sugared data types in Haskell, since they
 -- can not be defined in a module by hand.
@@ -132,7 +130,7 @@ specialCons :: [(String, [Constructor])]
 specialCons =
   [ ("unit", [(Special () (UnitCon ()), 0, False)])
   , ( "list"
-    , [(Special () (ListCon ()), 0, False), ((Special () (Cons ())), 2, True)]
+    , [(Special () (ListCon ()), 0, False), (Special () (Cons ()), 2, True)]
     )
   , ("fun", [(Special () (FunCon ()), 2, True)])
   , ( "pair"

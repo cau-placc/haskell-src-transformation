@@ -91,7 +91,7 @@ applyCCDecl insideLet (PatBind _ p r _) = if isPVar p
   else error "Toplevel PatBind with no Variable"
 applyCCDecl _ v = return v
 
-applyCCMatches :: Bool -> [Match ()] -> PM ([Match ()])
+applyCCMatches :: Bool -> [Match ()] -> PM [Match ()]
 applyCCMatches insideLet = mapM applyCCMatch
  where
   applyCCMatch :: Match () -> PM (Match ()) -- TODO maybe only apply if needed -> isIncomplete?

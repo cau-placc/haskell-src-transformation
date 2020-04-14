@@ -82,7 +82,7 @@ rhsToIf (GuardedRhss  _ grhs) next = buildIF next grhs
     -> [GuardedRhs ()]      -- guarded rhs to fold
     -> PM (Exp ())          -- if then else expr
   buildIF nx gs = foldM
-    (\res x -> (extract x) >>= \(e1, e2) -> return (If () e1 e2 res))
+    (\res x -> extract x >>= \(e1, e2) -> return (If () e1 e2 res))
     nx
     (reverse gs) -- reverse, since foldM is a foldl with side effect
 
@@ -134,7 +134,7 @@ applyGEExp e = case e of
   x              -> return x -- can cause problems if a exp is missing in this case
 
 -- Applies guard elimination on alts by using eliminateL
-applyGEAlts :: [Alt ()] -> PM ([Alt ()])
+applyGEAlts :: [Alt ()] -> PM [Alt ()]
 applyGEAlts as = if any (\(Alt _ _ rhs _) -> isGuardedRhs rhs) as
   then do
     let gexps = map (\(Alt _ p rhs _) -> ([p], rhs)) as
@@ -160,7 +160,7 @@ applyGEDecl v = return v
 
 -- mapM
 -- Applies guard elimination to a list of matches to generate one without guards
-applyGEMatches :: [Match ()] -> PM ([Match ()])
+applyGEMatches :: [Match ()] -> PM [Match ()]
 applyGEMatches []       = return []
 applyGEMatches (m : ms) = do
   let (oneFun, r) = span (comp m) ms
@@ -220,18 +220,16 @@ isGuardedRhs (UnGuardedRhs _ e) = containsGuardedRhsExp e
 
 containsGuardedRhsExp :: Exp () -> Bool --TODO decide if guard is in matches or in matches
 containsGuardedRhsExp e = case e of
-  InfixApp _ e1 _ e2 ->
-    (containsGuardedRhsExp) e1 || (containsGuardedRhsExp e2)
-  App    _ e1 e2 -> (containsGuardedRhsExp) e1 || (containsGuardedRhsExp e2)
-  Lambda _ _  e' -> containsGuardedRhsExp e'
-  Let    _ _  e' -> containsGuardedRhsExp e'
-  If _ e1 e2 e3  -> any containsGuardedRhsExp [e1, e2, e3]
-  Case _ e' alts ->
-    (containsGuardedRhsExp e') || any containsGuardedRhsAlt alts
-  Tuple _ _ es   -> any containsGuardedRhsExp es
-  List _ es      -> any containsGuardedRhsExp es
+  InfixApp _ e1 _ e2 -> containsGuardedRhsExp e1 || containsGuardedRhsExp e2
+  App    _ e1 e2     -> containsGuardedRhsExp e1 || containsGuardedRhsExp e2
+  Lambda _ _  e'     -> containsGuardedRhsExp e'
+  Let    _ _  e'     -> containsGuardedRhsExp e'
+  If _ e1 e2 e3      -> any containsGuardedRhsExp [e1, e2, e3]
+  Case _ e' alts -> containsGuardedRhsExp e' || any containsGuardedRhsAlt alts
+  Tuple _ _  es      -> any containsGuardedRhsExp es
+  List _ es          -> any containsGuardedRhsExp es
   ListComp _ _ _ -> error "containsGuardedRhsExp: ListComp not yet supported"
-  _              -> False
+  _                  -> False
 
 containsGuardedRhsAlt :: Alt () -> Bool
 containsGuardedRhsAlt (Alt _ _ rhs _) = isGuardedRhs rhs

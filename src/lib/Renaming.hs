@@ -52,7 +52,7 @@ instance TermSubst Exp where
     _                    -> error "TermSubst: Exp caused an error"
 
 instance TermSubst Alt where
-  substitute s (Alt l p rhs mb) = (Alt l p (substitute s rhs) mb)
+  substitute s (Alt l p rhs mb) = Alt l p (substitute s rhs) mb
 
 instance TermSubst Rhs where
   substitute s rhs = case rhs of

@@ -3,6 +3,8 @@ module Main
   )
 where
 
+import           Control.Moand                  ( void )
+
 import           Application
 import           FreshVars
 import           Language.Haskell.Exts
@@ -91,7 +93,7 @@ main = do
       let state = transformOptions opts
       input <- readFile $ inputFile opts
       let x = fromParseResult (parseModule input)
-          m = evalState (processModule (fmap (const ()) x)) state
+          m = evalState (processModule (void x)) state
       case outputDir opts of
         Just out -> do
           writeFile out (pPrint m)
@@ -111,4 +113,4 @@ printDebug b s | b         = print $ "DebugOutput:" ++ debugOutput s
 pPrint :: Module () -> String
 pPrint = prettyPrintStyleMode
   (Style { mode = PageMode, lineLength = 120, ribbonsPerLine = 1.5 })
-  (defaultMode)
+  defaultMode

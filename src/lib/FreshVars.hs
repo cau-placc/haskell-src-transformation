@@ -43,16 +43,20 @@ freshVar = do
 addConstrMap :: (String, [Constructor]) -> PM ()
 addConstrMap cs = do
   cmap <- State.gets constrMap
-  State.modify $ \state -> state { constrMap = (cs : cmap) }
-    {- renameFunc :: FuncDecl -> FreshVar FuncDecl
-    renameFunc (Func ...) = do
-      i <- freshVar
-      return (FuncDecl ...) -}
+  State.modify $ \state -> state { constrMap = cs : cmap }
+{-
 
-            {- processProg :: Prog -> Prog
-            processProg p = evalState (renameProg p) 0 -}
+renameFunc :: FuncDecl -> FreshVar FuncDecl
+renameFunc (Func ...) = do
+  i <- freshVar
+  return (FuncDecl ...)
+
+processProg :: Prog -> Prog
+processProg p = evalState (renameProg p) 0
+
+-}
 
 addDebug :: String -> PM ()
 addDebug s = do
   debug <- State.gets debugOutput
-  State.modify $ \state -> state { debugOutput = (s ++ debug) }
+  State.modify $ \state -> state { debugOutput = s ++ debug }
