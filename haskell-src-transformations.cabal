@@ -1,39 +1,23 @@
 cabal-version:       2.4
 
+-- Package name, version and description.
 name:                haskell-src-transformations
-
--- The package version.  See the Haskell package versioning policy (PVP)
--- for standards guiding when and how versions should be incremented.
--- https://wiki.haskell.org/Package_versioning_policy
--- PVP summary:      +-+------- breaking API changes
---                   | | +----- non-breaking API additions
---                   | | | +--- code changes with no API change
 version:             0.1.0.0
-
--- A short (one-line) description of the package.
--- synopsis:
-
--- A longer description of the package.
+category:            Language
+-- synopsis: TODO A short (one-line) description of the package.
 -- description:
+--   TODO A longer description of the package.
 
--- The license under which the package is released.
+-- Copyright information.
 license:             BSD-3-Clause
-
--- The file containing the license text.
 license-file:        LICENSE
+copyright:           (c) 2019, Kiel University
 
--- The package author(s).
-author:              Malte Clement <stu204333@mail.uni-kiel.de>, Jan Christiansen <jan.christiansen@hs-flensburg.de>
-
--- An email address to which users can send suggestions, bug reports, and
--- patches.
+author:              Malte Clement <stu204333@mail.uni-kiel.de>
+                   , Jan Christiansen <jan.christiansen@hs-flensburg.de>
 maintainer:          jan.christiansen@hs-flensburg.de
 
--- A copyright notice.
--- copyright:
-
-category:            Language
-
+-- Build configuration.
 build-type:          Simple
 
 -- Common settings and dependencies that are used by all stanzas below.
@@ -45,6 +29,7 @@ common deps
   default-language:    Haskell2010
   ghc-options:         -Wall
 
+-- Build configuration for the actual `haskell-src-transformations` library.
 library
   import:             deps
 
@@ -58,6 +43,7 @@ library
 
   build-depends:      mtl               >= 2.2 && < 2.3
 
+-- Build configuration for the command line interface.
 executable haskell-src-transformations
   import:             deps
 
@@ -68,6 +54,7 @@ executable haskell-src-transformations
   build-depends:      filepath          >= 1.4 && < 1.5
                     , haskell-src-transformations
 
+-- Build configuration for the unit tests of the library.
 test-suite haskell-src-transformations-unit-tests
   import:             deps
 
@@ -75,6 +62,7 @@ test-suite haskell-src-transformations-unit-tests
   hs-source-dirs:     src/test
   main-is:            Spec.hs
   ghc-options:        -main-is Spec
+  -- other-modules: TODO add unit tests
   build-depends:      base
                     , hspec
                     , QuickCheck
