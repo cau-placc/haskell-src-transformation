@@ -6,16 +6,11 @@ This tool was implemented as part of a bachelor thesis (by Malte Clement at Kiel
 
 This is a tool to translate different language features of Haskell into simpler expressions.
 
-* It translates pattern matching on left hand sides into explicit pattern matching on right sides using
-  Wadlers Algorithm for compiling pattern matching.
+* It translates pattern matching on left hand sides into explicit pattern matching on right sides using Wadlers Algorithm for compiling pattern matching.
 
 * Guards are transformed into `case`-expression using their semantics as described in the Haskell-report.
 
 * Partially defined functions are completed such that pattern mismatches do not occur.
-
-## Documentation
-
-* The thesis that describes the transformations can be found in the `LaTeX`-directory.
 
 ## Repository
 
@@ -32,8 +27,7 @@ The repository consists of two directories
 
 ## Required Software
 
-The tool is written in Haskell and uses Cabal to manage the dependencies. To build it, the GHC and Cabal are required. The tool has been tested with [GHC](https://www.haskell.org/ghc/), version  8.4.3 and 
-[Cabal](https://www.haskell.org/cabal/), version 2.2.0.1.
+The tool is written in Haskell and uses Cabal to manage the dependencies. To build it, the GHC and Cabal are required. The tool has been tested with [GHC](https://www.haskell.org/ghc/), version  8.4.3 and [Cabal](https://www.haskell.org/cabal/), version 2.2.0.1.
 
 ## Installation
 
@@ -53,4 +47,4 @@ CodeTransformation -I [InputFile]
 
 The generated code is printed to the console. If you want to specify the output directory use the `-o` flag.
 
- For more information on the different flags you can use the `-h` flag.
+For more information on the different flags you can use the `-h` flag.
