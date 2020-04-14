@@ -37,55 +37,46 @@ build-type:          Simple
 -- Constraint on the version of Cabal needed to build this package.
 cabal-version:       >=1.10
 
-
-library
-  -- Modules exported by the library.
-  exposed-modules:     Application,
-                       Algo,
-                       GuardElimination,
-                       CaseCompletion,
-                       FreshVars
-
-  -- Modules included in this library but not exported.
-  other-modules:       Renaming
-
-  -- LANGUAGE extensions used by modules in this package.
-  -- other-extensions:
-
-  -- Other library packages from which modules are imported.
-  build-depends:       mtl >= 2.2 && < 2.3,
-                       haskell-src-exts >= 1.23 && < 1.24,
-                       base >=4.12 && < 4.13
-
-  -- Directories containing source files.
-  hs-source-dirs:      src/lib
+-- Common settings and dependencies that are used by all stanzas below.
+common deps
+  build-depends:       base >=4.12 && < 4.13
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
   ghc-options:         -Wall
 
+library
+  import:             deps
+
+  hs-source-dirs:     src/lib
+  exposed-modules:    Application
+                    , Algo
+                    , GuardElimination
+                    , CaseCompletion
+                    , FreshVars
+  other-modules:      Renaming
+
+  build-depends:      mtl >= 2.2 && < 2.3
+                    , haskell-src-exts >= 1.23 && < 1.24
+
 executable haskell-src-transformations
+  import:             deps
+
   -- The @Main@ module is currently the only module of the command
   -- line interface.
   main-is:            Main.hs
-
-  -- Other library packages from which modules are imported.
-  build-depends:       filepath >= 1.4 && < 1.5,
-                       haskell-src-exts >= 1.23 && < 1.24,
-                       base >=4.12 && < 4.13,
-                       haskell-src-transformations
-
-  -- Directories containing source files.
   hs-source-dirs:     src/exe
+  build-depends:      filepath >= 1.4 && < 1.5
+                    , haskell-src-exts >= 1.23 && < 1.24
+                    , haskell-src-transformations
 
-test-suite tests
+test-suite haskell-src-transformations-unit-tests
+  import:             deps
+
   type:               exitcode-stdio-1.0
   hs-source-dirs:     src/test
-  main-is:            Test.hs
-    -- other-modules:
-  build-depends:      base,
-                      hspec,
-                      QuickCheck
-
-  default-language:   Haskell2010
-  ghc-options:        -Wall
+  main-is:            Spec.hs
+  ghc-options:        -main-is Spec
+  build-depends:      base
+                    , hspec
+                    , QuickCheck
