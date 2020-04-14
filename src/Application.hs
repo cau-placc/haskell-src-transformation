@@ -10,32 +10,6 @@ import           Language.Haskell.Exts.Parser
 import           Language.Haskell.Exts.Pretty
 import           Language.Haskell.Exts.Syntax
 
--- used for local testing ------------------------------------------------------
-test :: IO ()
-test = do
-  input <- readFile ".\\Examples\\DebugInput.hs"
-  let x = fromParseResult (parseModule input)
-      (m,state) = mainI (fmap (const ()) x)
-  writeFile ".\\Examples\\DebugOutput.hs" (prettyPrintStyleMode (Style {mode = PageMode, lineLength = 120, ribbonsPerLine = 1.5}) (defaultMode) m)
-  print "Algorithm executed"
-  print $ "Debug DebugOutput:" ++ debugOutput state
-
-testShow:: IO ()
-testShow = do
-  input <- readFile ".\\Examples\\DebugInput.hs"
-  let x = fromParseResult (parseModule input)
-  writeFile ".\\Examples\\DebugOutput.hs" (show ( (fst . mainI) (fmap (const ()) x)))
-  print "Algorithm executed"
-
-testUnmod :: IO ()
-testUnmod= do
-  input <- readFile ".\\Examples\\DebugInput.hs"
-  let x = fromParseResult (parseModule input)
-  writeFile ".\\Examples\\DebugOutput.hs" (show  (fmap (const ()) x))
-  print "Algorithm executed"
-
---------------------------------------------------------------------------------
-
 -- |The function 'useAlgo' applies the algorithm on each declaration in the module.
 useAlgoModule :: Module () -> PM (Module ())
 useAlgoModule (Module _ mmh mps ids ds) = do dcls <- mapM useAlgoDecl ds
@@ -143,15 +117,6 @@ processModule m = do
   caseCompletedM <- CC.applyCCModule eliminatedM
   nm <- useAlgoModule caseCompletedM
   return nm
-
--- only used for intern testing
-mainI :: Module () -> (Module (),PMState)
-mainI m = runState (processModule m) (PMState {nextId = 0
-                                              ,constrMap = specialCons
-                                              ,matchedPat = []
-                                              ,trivialCC = False
-                                              ,opt = True
-                                              ,debugOutput = ""})
 
 -- | 'specialCons' is a map for the sugared data types in Haskell, since they
 -- can not be defined in a module by hand.
