@@ -3,7 +3,7 @@ module Main
   )
 where
 
-import           Control.Moand                  ( void )
+import           Control.Monad                  ( void )
 
 import           Application
 import           FreshVars
@@ -93,7 +93,7 @@ main = do
       let state = transformOptions opts
       input <- readFile $ inputFile opts
       let x = fromParseResult (parseModule input)
-          m = evalState (processModule (void x)) state
+          m = evalPM (processModule (void x)) state
       case outputDir opts of
         Just out -> do
           writeFile out (pPrint m)

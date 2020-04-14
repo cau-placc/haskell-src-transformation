@@ -1,13 +1,18 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+
 module FreshVars
   ( module FreshVars
   , State.gets
   , State.modify
-  , State.runState
-  , State.evalState
   )
 where                                                   -- import Control.MonadState
 
-import           Control.Monad.State            ( State )
+import           Prelude                 hiding ( fail )
+
+import           Control.Monad.Fail             ( MonadFail(..) )
+import           Control.Monad.State            ( State
+                                                , MonadState
+                                                )
 import qualified Control.Monad.State           as State
 import qualified Language.Haskell.Exts.Syntax  as S
 
@@ -30,7 +35,17 @@ data PMState = PMState { nextId      :: Int
                        , opt         :: Bool                      -- optimize case exps
                        , debugOutput :: String}
 
-type PM a = State PMState a
+newtype PM a = PM { unwrapPM :: State PMState a }
+ deriving (Functor, Applicative, Monad, MonadState PMState)
+
+runPM :: PM a -> PMState -> (a, PMState)
+runPM = State.runState . unwrapPM
+
+evalPM :: PM a -> PMState -> a
+evalPM = State.evalState . unwrapPM
+
+instance MonadFail PM where
+  fail = error
 
 freshVar :: PM Int
 freshVar = do
@@ -52,7 +67,7 @@ renameFunc (Func ...) = do
   return (FuncDecl ...)
 
 processProg :: Prog -> Prog
-processProg p = evalState (renameProg p) 0
+processProg p = evalPM (renameProg p) 0
 
 -}
 
