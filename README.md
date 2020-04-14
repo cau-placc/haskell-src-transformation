@@ -1,5 +1,9 @@
 # haskell-src-transformation
 
+<!-- Badges -->
+![CI Pipeline](https://github.com/FreeProving/haskell-src-transformations/workflows/CI%20Pipeline/badge.svg)
+
+<!-- Short description -->
 This tool was implemented as part of a bachelor thesis (by Malte Clement at Kiel University) and should be considered as a __alpha version of a prototype__.
 
 # Haskell to Haskell Transformation Tool
