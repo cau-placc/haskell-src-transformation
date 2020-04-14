@@ -46,7 +46,7 @@ instance TermSubst Exp where
       Tuple l bxd es       -> Tuple l bxd (map (substitute s) es)
       List l es            -> List l (map (substitute s) es)
       Paren l e            -> Paren l (substitute s e)
-      ListComp _ _ _       -> error "TermSubst: List comp is not supported"      -- TODO Justin fragen
+      ListComp _ _ _       -> error "TermSubst: List comp is not supported"
       ExpTypeSig l e t     -> ExpTypeSig l (substitute s e) t
       _                    -> error "TermSubst: Exp caused an error"
 
@@ -80,7 +80,7 @@ instance Rename Exp where
         Tuple l bxd es       -> Tuple l bxd (map (rename s) es)
         List l es            -> List l (map (rename s) es)
         Paren l e            -> Paren l (rename s e)
-        ListComp _ _ _      -> error "Rename: List comp is not supported"      -- TODO Justin fragen
+        ListComp _ _ _      -> error "Rename: List comp is not supported"
         ExpTypeSig l e t     -> ExpTypeSig l (rename s e) t
         _                    -> error "Rename: Exp caused an error"
 instance Rename QName where
@@ -121,7 +121,7 @@ renamePVar (PVar l name) = do nname <- newName name
                               return (PVar l nname)
 renamePVar _             = error "no variable in renamePVar"
 
-newName :: Name l -> PM (Name l)                                                -- TODO if then else redundand
+newName :: Name l -> PM (Name l)
 newName (Ident l _) = do var   <- freshVar
                          return (Ident l ('a':show var))
 newName _           = error "no Ident in newName"

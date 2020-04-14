@@ -6,8 +6,6 @@ import           Algo
 import qualified CaseCompletion               as CC
 import           FreshVars
 import qualified GuardElimination             as GE
-import           Language.Haskell.Exts.Parser
-import           Language.Haskell.Exts.Pretty
 import           Language.Haskell.Exts.Syntax
 
 -- |The function 'useAlgo' applies the algorithm on each declaration in the module.

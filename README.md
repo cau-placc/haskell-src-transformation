@@ -18,6 +18,8 @@ The repository consists of two directories
 
 * `src` contains the source code of the project
 
+  * `src/exe` contains modules for the command line interface
+  * `src/lib` contains modules for the conde transformation library
   * `src/test` contains modules that have been translated to test certain features
 
 * `example` contains some examples that have been transformed by hand using Wadler's algorithm.

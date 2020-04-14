@@ -53,18 +53,30 @@ library
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       filepath >= 1.4 && < 1.5,
-                       mtl >= 2.2 && < 2.3,
+  build-depends:       mtl >= 2.2 && < 2.3,
                        haskell-src-exts >= 1.23 && < 1.24,
                        base >=4.12 && < 4.13
 
   -- Directories containing source files.
-  hs-source-dirs:      src
+  hs-source-dirs:      src/lib
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
   ghc-options:         -Wall
 
+executable haskell-src-transformations
+  -- The @Main@ module is currently the only module of the command
+  -- line interface.
+  main-is:            Main.hs
+
+  -- Other library packages from which modules are imported.
+  build-depends:       filepath >= 1.4 && < 1.5,
+                       haskell-src-exts >= 1.23 && < 1.24,
+                       base >=4.12 && < 4.13,
+                       haskell-src-transformations
+
+  -- Directories containing source files.
+  hs-source-dirs:     src/exe
 
 test-suite tests
   type:               exitcode-stdio-1.0
