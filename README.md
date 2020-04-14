@@ -18,7 +18,7 @@ This is a tool to translate different language features of Haskell into simpler 
 
 ## Repository
 
-The repository consists of two directories
+The repository is structured as follows.
 
 * `src` contains the source code of the project
 
@@ -29,6 +29,9 @@ The repository consists of two directories
 * `example` contains some examples that have been transformed by hand using Wadler's algorithm.
 
   Additionally, it contains some special examples that were used to test the [haskell-to-coq-compiler](https://git.informatik.uni-kiel.de/stu203400/haskell-to-coq-compiler)
+
+* `tool` contains Bash scripts that are used during development and for testing.
+
 
 ## Required Software
 
