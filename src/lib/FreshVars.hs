@@ -5,7 +5,7 @@ module FreshVars
   , State.gets
   , State.modify
   )
-where                                                   -- import Control.MonadState
+where
 
 import           Prelude                 hiding ( fail )
 
@@ -16,8 +16,9 @@ import           Control.Monad.State            ( State
 import qualified Control.Monad.State           as State
 import qualified Language.Haskell.Exts.Syntax  as S
 
-type Constructor = (S.QName (), Int, Bool) -- QName instead of String to support special Syntax
-                                         -- Bool isInfix
+-- QName instead of String to support special Syntax
+-- Bool isInfix
+type Constructor = (S.QName (), Int, Bool)
 
 getConstrArity :: Constructor -> Int
 getConstrArity (_, a, _) = a
@@ -28,12 +29,14 @@ getConstrName (n, _, _) = n
 isInfixConst :: Constructor -> Bool
 isInfixConst (_, _, b) = b
 
-data PMState = PMState { nextId      :: Int
-                       , constrMap   :: [(String, [Constructor])] -- Arity
-                       , matchedPat  :: [(S.Exp (), S.Pat () )]   -- Variable and binded Cons
-                       , trivialCC   :: Bool
-                       , opt         :: Bool                      -- optimize case exps
-                       , debugOutput :: String}
+data PMState = PMState
+  { nextId      :: Int
+  , constrMap   :: [(String, [Constructor])] -- Arity
+  , matchedPat  :: [(S.Exp (), S.Pat () )] -- Variable and binded Cons
+  , trivialCC   :: Bool
+  , opt         :: Bool -- optimize case exps
+  , debugOutput :: String
+  }
 
 newtype PM a = PM { unwrapPM :: State PMState a }
  deriving (Functor, Applicative, Monad, MonadState PMState)

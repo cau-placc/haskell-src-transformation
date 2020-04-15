@@ -35,17 +35,18 @@ toDecl p e = PatBind () p (UnGuardedRhs () e) B.noBinds
 
 -- Folds the list of GExps to declarations.
 foldGEqs
-  :: [Pat ()]              -- fresh variables for the case exps
+  :: [Pat ()]               -- fresh variables for the case exps
   -> ([Decl ()], Pat ())    -- startcase ([], first generated Pattern)
-  -> [GExp]                -- list of pattern + rhs pair
-  -> PM ([Decl ()], Pat ()) -- a list of declarations for the let binding and a free Variable for the error case
+  -> [GExp]                 -- list of pattern + rhs pair
+  -> PM ([Decl ()], Pat ()) -- a list of declarations for the let binding and a
+                            -- free Variable for the error case
 foldGEqs vs = foldM (\(decls, p) geq -> createDecl vs (decls, p) geq)
 
 -- Generates a varbinding and a new variable for the next var binding
 createDecl
-  :: [Pat ()]                -- generated varibles
-  -> ([Decl ()], Pat ())    -- (current decls , variable for let binding)
-  -> GExp                    -- pairs of pattern to match against and a guarded Rhs
+  :: [Pat ()]            -- generated varibles
+  -> ([Decl ()], Pat ()) -- (current decls , variable for let binding)
+  -> GExp                -- pairs of pattern to match against and a guarded Rhs
   -> PM ([Decl ()], Pat ()) -- var bindings , variable for next match
 createDecl vs (decl, p) (ps, rhs) = do
   nVar <- A.newVar
@@ -62,7 +63,10 @@ createCase
   -> Exp ()             -- the other pattern (in case pattern match or guard fails)
   -> [(Pat (), Pat ())] -- Patterns to match (PVar , Pattern)
   -> Exp ()
---createCase i next vps  = foldr (\(v,p) next -> Case () (A.translatePVar v) [B.alt p res, B.alt B.wildcard next]) i vps
+-- createCase i next vps
+--   = foldr (\(v,p) next ->
+--       Case () (A.translatePVar v)
+--               [B.alt p res, B.alt B.wildcard next]) i vps
 createCase i _    []             = i
 createCase i next ((v, p) : vps) = Case
   ()
@@ -94,7 +98,8 @@ extract (GuardedRhs _ [s] e) = applyGEExp e
   fromQualifier :: Stmt () -> Exp ()
   fromQualifier (Qualifier () qe) = qe
   fromQualifier _                 = error "fromQualifier: no Qualifier"
-extract (GuardedRhs _ (_ : _) _) = error "Currently only one guard exp allowed" -- TODO
+-- TODO
+extract (GuardedRhs _ (_ : _) _) = error "Currently only one guard exp allowed"
 extract (GuardedRhs _ []      _) = error "GuardedRhss with no guards"
 
 -- Applies guard elimination on an expression converting guarded rhs in cases
@@ -131,7 +136,8 @@ applyGEExp e = case e of
     es' <- mapM applyGEExp es
     return $ List () es'
   ListComp _ _ _ -> error "applyGEExp: ListComp not yet supported"
-  x              -> return x -- can cause problems if a exp is missing in this case
+  -- can cause problems if a exp is missing in this case
+  x              -> return x
 
 -- Applies guard elimination on alts by using eliminateL
 applyGEAlts :: [Alt ()] -> PM [Alt ()]
@@ -218,7 +224,8 @@ isGuardedRhs :: Rhs () -> Bool
 isGuardedRhs (GuardedRhss  _ _) = True
 isGuardedRhs (UnGuardedRhs _ e) = containsGuardedRhsExp e
 
-containsGuardedRhsExp :: Exp () -> Bool --TODO decide if guard is in matches or in matches
+-- TODO decide if guard is in matches or in matches
+containsGuardedRhsExp :: Exp () -> Bool
 containsGuardedRhsExp e = case e of
   InfixApp _ e1 _ e2 -> containsGuardedRhsExp e1 || containsGuardedRhsExp e2
   App    _ e1 e2     -> containsGuardedRhsExp e1 || containsGuardedRhsExp e2

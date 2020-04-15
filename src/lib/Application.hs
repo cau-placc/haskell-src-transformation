@@ -11,21 +11,23 @@ import           FreshVars
 import qualified GuardElimination              as GE
 import           Language.Haskell.Exts.Syntax
 
--- |The function 'useAlgo' applies the algorithm on each declaration in the module.
+-- | The function 'useAlgo' applies the algorithm on each declaration in
+--   the module.
 useAlgoModule :: Module () -> PM (Module ())
 useAlgoModule (Module _ mmh mps ids ds) = do
   dcls <- mapM useAlgoDecl ds
   return $ Module () mmh mps ids dcls
 useAlgoModule _ = error "useAlgoModule: not on module"
 
--- |The function 'useAlgoDecl' applies the algorithm on the the FunBinds
+-- | The function 'useAlgoDecl' applies the algorithm on the the FunBinds
 useAlgoDecl :: Decl () -> PM (Decl ())
 useAlgoDecl (FunBind _ ms) = do
   nms <- useAlgoMatches ms
   return (FunBind () nms)
 useAlgoDecl v = return v
 
--- TODO maybe refactor to fun decl or check if oneFun stuff is needed or always true
+-- TODO maybe refactor to fun decl or check if oneFun stuff is needed or
+-- always true
 useAlgoMatches :: [Match ()] -> PM [Match ()]
 useAlgoMatches []       = return []
 useAlgoMatches (m : ms) = do
@@ -39,17 +41,17 @@ useAlgoMatches (m : ms) = do
       xs <- useAlgoMatches r
       return (m : xs)
 
--- |Checks a given list of Matches for constructor pattern.
--- Returns True if the list contains more than one Match or if any of the pattern
--- is a constructor pattern.
+-- | Checks a given list of Matches for constructor pattern.
+--   Returns True if the list contains more than one Match or if any of the
+--   pattern is a constructor pattern.
 hasCons :: [Match ()] -> Bool
 hasCons [m] = case m of
   Match _ _ ps _ _         -> any isCons ps
   InfixMatch _ p1 _ ps _ _ -> any isCons (p1 : ps)
 hasCons _ = True -- False?
 
--- |The function 'useAlgo' applies the match function to a list of matches
--- returning a single Match.
+-- | The function 'useAlgo' applies the match function to a list of matches
+--   returning a single Match.
 useAlgo
   :: [Match ()]    -- all matches for one function name
   -> PM (Match ()) -- contains one match
@@ -76,30 +78,32 @@ addG = maybe (return ())
 -- addG f ma = maybe (return()) f ma
 
 -- | The function 'collectDataInfo' takes a module and writes all datatype
--- declarations into the State with their name and constructors.
+--   declarations into the State with their name and constructors.
 collectDataInfo :: Module () -> PM ()
 collectDataInfo (Module _ _ _ _ decls) = do
   mas <- mapM collectDataDecl decls
   mapM_ (addG addConstrMap) mas
 collectDataInfo _ = return ()
 
--- |The function 'collectDataDecl' takes a Declaration and returns a pair of
--- a datatype name and a list of cunstructors if the declaration was a DataDecl.
--- Returns Nothing otherwise.
+-- | The function 'collectDataDecl' takes a Declaration and returns a pair of
+--   a datatype name and a list of cunstructors if the declaration was a
+--   DataDecl. Returns Nothing otherwise.
 collectDataDecl :: Decl () -> PM (Maybe (String, [Constructor]))
 collectDataDecl (DataDecl _ (DataType _) _ dhead qcdecls _) =
   return $ Just (getDataName dhead, map getDataCons qcdecls)
 collectDataDecl _ = return Nothing
 
--- |The function 'getDataName' takes a DeclHead and returns a string with the
--- name of the data type.
-getDataName :: DeclHead () -> String                                            -- add symbols?
+-- | The function 'getDataName' takes a DeclHead and returns a string with the
+--   name of the data type.
+getDataName :: DeclHead () -> String -- add symbols?
 getDataName (DHead _ dname ) = fromName dname
 getDataName (DHApp _ decl _) = getDataName decl
 getDataName (DHParen _ decl) = getDataName decl
-getDataName _ = error "getDataName: Symbol or infix in declaration" --TODO Test symbols and infix
+-- TODO Test symbols and infix
+getDataName _ = error "getDataName: Symbol or infix in declaration"
 
--- |The function 'getDataName' takes a QualConDecl and returns the contained constructor.
+-- | The function 'getDataName' takes a QualConDecl and returns the contained
+--   constructor.
 getDataCons :: QualConDecl () -> Constructor
 getDataCons (QualConDecl _ _ _ cdecl) = getDataCons' cdecl
  where
@@ -113,19 +117,19 @@ fromName :: Name () -> String
 fromName (Ident  _ str) = str
 fromName (Symbol _ str) = str
 
--- |The function 'processModule' sequentially applies the different transformations
--- to the given module after collecting the data types. Returns a new module with
--- the transformed functions.
+-- | The function 'processModule' sequentially applies the different
+--   transformations to the given module after collecting the data types.
+--   Returns a new module with the transformed functions.
 processModule :: Module () -> PM (Module ())
 processModule m = do
-  collectDataInfo m                                                          -- TODO  maybe unused
+  collectDataInfo m -- TODO  maybe unused
   eliminatedM    <- GE.applyGEModule m
   caseCompletedM <- CC.applyCCModule eliminatedM
   useAlgoModule caseCompletedM
 
 -- | 'specialCons' is a map for the sugared data types in Haskell, since they
--- can not be defined in a module by hand.
--- This map is the default 'constrMap' for the PMState used in Main.hs
+--   can not be defined in a module by hand.
+--   This map is the default 'constrMap' for the PMState used in Main.hs
 specialCons :: [(String, [Constructor])]
 specialCons =
   [ ("unit", [(Special () (UnitCon ()), 0, False)])

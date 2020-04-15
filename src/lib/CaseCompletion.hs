@@ -9,7 +9,8 @@ import           FreshVars
 import qualified Language.Haskell.Exts.Build   as B
 import           Language.Haskell.Exts.Syntax
 
--- takes a given expression and applies the algorithm on it resulting in completed cases
+-- | Takes a given expression and applies the algorithm on it resulting in
+--   completed cases
 completeCase :: Bool -> Exp () -> PM (Exp ())
 completeCase insideLet (Case _ expr as) = do
   v <- newVar
@@ -94,7 +95,8 @@ applyCCDecl _ v = return v
 applyCCMatches :: Bool -> [Match ()] -> PM [Match ()]
 applyCCMatches insideLet = mapM applyCCMatch
  where
-  applyCCMatch :: Match () -> PM (Match ()) -- TODO maybe only apply if needed -> isIncomplete?
+  -- TODO maybe only apply if needed -> isIncomplete?
+  applyCCMatch :: Match () -> PM (Match ())
   applyCCMatch (Match _ n ps rhs _) = case rhs of
     UnGuardedRhs _ e -> do
       x <- completeCase insideLet e
