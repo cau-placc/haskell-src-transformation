@@ -139,6 +139,65 @@ jobs:
         path: ./build/bin/haskell-src-transformations
 
   #############################################################################
+  # Unit tests                                                                #
+  #############################################################################
+
+  # Run the unit tests against all supported platforms.
+  unit-tests:
+    name: Unit tests
+    needs: [cabal-build]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"] # "macos-latest", "windows-latest"
+    steps:
+    ### SETUP CACHE ###########################################################
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Setup Haskell
+      uses: actions/setup-haskell@v1
+      with:
+        ghc-version: '8.6.5'
+        cabal-version: '2.4'
+    - name: Update Cabal Package List
+      id: cabal-update
+      run: |
+        cabal new-update
+        echo "::set-output name=cabal-hash::$(cat cabal.project free-compiler.cabal | sha256sum | awk '{ print $1 }')"
+        echo "::set-output name=cabal-index-hash::$(cat ~/.cabal/packages/**/01-index.cache | sha256sum -b | awk '{ print $1 }')"
+        echo "::set-output name=haskell-source-hash::$(cat $(find src -name '*.hs') | sha256sum | awk '{ print $1 }')"
+    - name: Cache ~/.cabal/packages
+      uses: actions/cache@v1
+      with:
+        path: ~/.cabal/packages
+        key: ${{ matrix.os }}-cabal-packages-${{ steps.cabal-update.outputs.cabal-hash }}-${{ steps.cabal-update.outputs.cabal-index-hash }}
+        restore-keys: |
+          ${{ matrix.os }}-cabal-packages-${{ steps.cabal-update.outputs.cabal-hash }}-
+          ${{ matrix.os }}-cabal-packages-
+    - name: Cache ~/.cabal/store
+      uses: actions/cache@v1
+      with:
+        path: ~/.cabal/store
+        key: ${{ matrix.os }}-cabal-store-${{ steps.cabal-update.outputs.cabal-hash }}-${{ steps.cabal-update.outputs.cabal-index-hash }}
+        restore-keys: |
+          ${{ matrix.os }}-cabal-store-${{ steps.cabal-update.outputs.cabal-hash }}-
+          ${{ matrix.os }}-cabal-store-
+    - name: Cache dist-newstyle
+      uses: actions/cache@v1
+      with:
+        path: dist-newstyle
+        key: ${{ matrix.os }}-dist-newstyle-${{ steps.cabal-update.outputs.cabal-hash }}-${{ steps.cabal-update.outputs.cabal-index-hash }}-${{ steps.cabal-update.outputs.haskell-source-hash }}
+        restore-keys: |
+          ${{ matrix.os }}-dist-newstyle-${{ steps.cabal-update.outputs.cabal-hash }}-${{ steps.cabal-update.outputs.cabal-index-hash }}-
+          ${{ matrix.os }}-dist-newstyle-${{ steps.cabal-update.outputs.cabal-hash }}-
+          ${{ matrix.os }}-dist-newstyle-
+    ### END SETUP CACHE #######################################################
+    - name: Build unit tests
+      run: cabal new-build haskell-src-transformations-unit-tests
+    - name: Run unit tests
+      run: cabal new-run haskell-src-transformations-unit-tests
+
+  #############################################################################
   # Documentation                                                             #
   #############################################################################
 
