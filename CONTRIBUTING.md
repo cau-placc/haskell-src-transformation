@@ -108,7 +108,7 @@ The following instructions guide you through the creation of a pull request and 
        Once you have created a fork, you can clone your fork and start making changes.
 
        ```
-       git clone git@github.com:YOUR_USER_NAME/free-compiler.git
+       git clone git@github.com:YOUR_USER_NAME/haskell-src-transformations.git
        ```
 
        In a forked repository, you can push to the master branch directly.
@@ -1090,8 +1090,8 @@ See the [LICENSE][haskell-src-transformations/LICENSE] file for details.
   "Chris Beams — How to Write a Git Commit Message"
 
 [GitHub]:
-  https://github.com/FreeProving/free-compiler
-  "Free Compiler on GitHub"
+  https://github.com/FreeProving/haskell-src-transformations
+  "haskell-src-transformations on GitHub"
 [GitHub/Actions]:
   https://github.com/features/actions
   "GitHub Actions"
