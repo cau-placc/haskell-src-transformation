@@ -81,7 +81,7 @@ jobs:
       id: cabal-update
       run: |
         cabal new-update
-        echo "::set-output name=cabal-hash::$(cat cabal.project free-compiler.cabal | sha256sum | awk '{ print $1 }')"
+        echo "::set-output name=cabal-hash::$(cat cabal.project haskell-src-transformations.cabal | sha256sum | awk '{ print $1 }')"
         echo "::set-output name=cabal-index-hash::$(cat ~/.cabal/packages/**/01-index.cache | sha256sum -b | awk '{ print $1 }')"
         echo "::set-output name=haskell-source-hash::$(cat $(find src -name '*.hs') | sha256sum | awk '{ print $1 }')"
     - name: Cache ~/.cabal/packages
@@ -163,7 +163,7 @@ jobs:
       id: cabal-update
       run: |
         cabal new-update
-        echo "::set-output name=cabal-hash::$(cat cabal.project free-compiler.cabal | sha256sum | awk '{ print $1 }')"
+        echo "::set-output name=cabal-hash::$(cat cabal.project haskell-src-transformations.cabal | sha256sum | awk '{ print $1 }')"
         echo "::set-output name=cabal-index-hash::$(cat ~/.cabal/packages/**/01-index.cache | sha256sum -b | awk '{ print $1 }')"
         echo "::set-output name=haskell-source-hash::$(cat $(find src -name '*.hs') | sha256sum | awk '{ print $1 }')"
     - name: Cache ~/.cabal/packages
@@ -224,7 +224,7 @@ jobs:
       id: cabal-update
       run: |
         cabal new-update
-        echo "::set-output name=cabal-hash::$(cat cabal.project free-compiler.cabal | sha256sum | awk '{ print $1 }')"
+        echo "::set-output name=cabal-hash::$(cat cabal.project haskell-src-transformations.cabal | sha256sum | awk '{ print $1 }')"
         echo "::set-output name=cabal-index-hash::$(cat ~/.cabal/packages/**/01-index.cache | sha256sum -b | awk '{ print $1 }')"
         echo "::set-output name=haskell-source-hash::$(cat $(find src -name '*.hs') | sha256sum | awk '{ print $1 }')"
     - name: Cache ~/.cabal/packages
@@ -258,7 +258,7 @@ jobs:
     - name: Copy documentation to build directory
       run: |
         mkdir -p ./build/docs
-        cp -R $(find dist-newstyle -path "*doc/html/free-compiler")/. ./build/docs
+        cp -R $(find dist-newstyle -path "*doc/html/haskell-src-transformations")/. ./build/docs
     - name: Upload documentation
       uses: actions/upload-artifact@v1
       with:
