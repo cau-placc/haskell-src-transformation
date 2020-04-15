@@ -7,7 +7,7 @@ We want to make the process of contributing to this project as easy and transpar
 Thus, please take the time to read this document carefully if this is your first time contributing.
 Note that the following is a set of guidelines and recommendations.
 They are not rules and they are certainly not complete.
-If you have questions or want to propose changes to this document, feel free to open an [issue][freec/issues] or [pull request][freec/pull-requests].
+If you have questions or want to propose changes to this document, feel free to open an [issue][haskell-src-transformations/issues] or [pull request][haskell-src-transformations/pull-requests].
 
 ## Table of Contents
 
@@ -22,7 +22,6 @@ If you have questions or want to propose changes to this document, feel free to 
     - [Running Unit Tests](#running-unit-tests)
     - [Writing Unit Tests](#writing-unit-tests)
     - [The CI Pipeline](#the-ci-pipeline)
-    - [Running The Pipeline Locally](#running-the-pipeline-locally)
  6. [Styleguides](#styleguides)
     - [Languages without Styleguide](#languages-without-styleguide)
     - [General Guidelines](#general-guidelines)
@@ -36,7 +35,7 @@ If you have questions or want to propose changes to this document, feel free to 
 
 ## Code of Conduct
 
-The Free Proving project and everyone participating in it is governed by our [Code of Conduct][freec/CODE_OF_CONDUCT].
+The Free Proving project and everyone participating in it is governed by our [Code of Conduct][haskell-src-transformations/CODE_OF_CONDUCT].
 By participating, you are expected to uphold this code.
 Please report unacceptable behavior to the project maintainers responsible for enforcement at [sad@informatik.uni-kiel.de](mailto:sad@informatik.uni-kiel.de).
 
@@ -44,8 +43,8 @@ Please report unacceptable behavior to the project maintainers responsible for e
 
 ### Reporting Bugs
 
-Bugs are tracked as [issues on GitHub][freec/issues].
-If you found a bug, first **make sure that the bug hasn't been reported yet** (see [Bugs][freec/labels/bug]) and that you can reproduce the bug in the latest version of the compiler.
+Bugs are tracked as [issues on GitHub][haskell-src-transformations/issues].
+If you found a bug, first **make sure that the bug hasn't been reported yet** (see [Bugs][haskell-src-transformations/labels/bug]) and that you can reproduce the bug in the latest version of the library.
 If the problem persists in the latest version and you cannot find a related bug report, create a new issue and provide as much of the following information as possible by filling out the *bug report* template.
 
  - Explain the problem and include additional details to help maintainers and members of the FreeProving project to reproduce the problem.
@@ -57,26 +56,26 @@ If the problem persists in the latest version and you cannot find a related bug 
       Try to find a minimal example that still shows the problematic behavior.
     + **Describe the behavior you observed after following the steps.**
     + **Explain which behavior you expected to see instead and why.**
-    + **Include error messages and crash reports** reported by the compiler or operating system.
+    + **Include error messages and crash reports** reported by the library or operating system.
 
  - Include information about your configuration and environment.
 
-    + **Which version of the Free Compiler are you using?**
-      You can get the exact version by running `freec --version` in your terminal.
+    + **Which version of the library are you using?**
+      Preferably include the Hash of the last Git commit you've checked out.
+      You can get this information from running `git rev-parse HEAD` in your terminal.
     + **What's the name and version of the operating system you are using?**
     + **What versions of GHC and Cabal are you using?**
-    + **How are you running the Free Compiler?** Have you installed the compiler as described in the README, are you running it using Cabal or do you use one of our Bash scripts?
-       What command line arguments have you passed?
-    + **If the problem regards the generated Coq code,** what version of Coq are you using and how does your `_CoqProject` file look like (if any)?
-    + **Have you made any modifications** to the Compiler's source code, build configuration or the code of the included Coq Base library?
+    + **How are you using the package?** Have you installed the command line interface as described in the README, are you running it using Cabal or do you use it as a dependency in your own project?
+       What command line arguments have you passed if any?
+    + **Have you made any modifications** to the libraries source code or build configuration?
 
- - Assign the <kbd>[bug][freec/labels/bug]</kbd> label to the issue.
+ - Assign the <kbd>[bug][haskell-src-transformations/labels/bug]</kbd> label to the issue.
    If you do not have the permission to add labels, a member of the FreeProving project will assign this label when reviewing the bug report.
 
 ### Suggesting Enhancements
 
-Enhancement proposals are tracked as [issues on GitHub][freec/issues].
-If you want to propose an enhancement, first **make sure that there is no similar proposal already** (see [Enhancement Proposals][freec/labels/enhancement]).
+Enhancement proposals are tracked as [issues on GitHub][haskell-src-transformations/issues].
+If you want to propose an enhancement, first **make sure that there is no similar proposal already** (see [Enhancement Proposals][haskell-src-transformations/labels/enhancement]).
 Consider leaving a comment or :+1: if you want to support an existing enhancement proposal.
 If no such proposal has been made in the past, create a new issue and provide as much of the following information as possible by filling out the *feature request* template.
 
@@ -88,12 +87,12 @@ If no such proposal has been made in the past, create a new issue and provide as
     + **Explain why the enhancement is useful** to more users of the Free Compiler.
     + **List alternatives you have considered** and what's their drawback compared to your suggestion.
 
- - Assign the <kbd>[enhancement][freec/labels/enhancement]</kbd> label to the issue.
+ - Assign the <kbd>[enhancement][haskell-src-transformations/labels/enhancement]</kbd> label to the issue.
    If you do not have the permission to add labels, a member of the FreeProving project will assign this label when reviewing the enhancement proposal.
 
 ### Contributing Code
 
-In order to contribute code to the FreeProvig project, you have to submit a [pull request][freec/pull-requests].
+In order to contribute code to the FreeProvig project, you have to submit a [pull request][haskell-src-transformations/pull-requests].
 The following instructions guide you through the creation of a pull request and our quality assurance process.
 
  1. **Pick an issue to work on**
@@ -101,7 +100,7 @@ The following instructions guide you through the creation of a pull request and 
     - It is usually best to work on one issue at the time.
     - If you want to implement a feature but there is no issue yet, create a new issue first and consider discussing the change with other members of the FreeProving project first.
     - As a member of the free proving project, assign yourself to the issue you are currently working on to let others know that somebody is working on the issue already.
-    - Take a look at the list of [good first issues][freec/labels/good-first-issue] if you want to help but don't know where to start.
+    - Take a look at the list of [good first issues][haskell-src-transformations/labels/good-first-issue] if you want to help but don't know where to start.
 
  2. **Create a fork or feature branch**
 
@@ -136,8 +135,13 @@ The following instructions guide you through the creation of a pull request and 
 
     - Follow the applicable [styleguide](#styleguides).
 
-    - Ensure that your changes work correctly and do not break other parts of the compiler by running [unit tests and other checks](#testing) frequently.
+    - Ensure that your changes work correctly and do not break other parts of the library by running [unit tests and other checks](#testing) frequently.
       You should also [write your own unit tests](#writing-unit-tests).
+
+      > **Note**: This library does not include any unit tests yet.
+      > Thus, special care must be taken when making any changes.
+      > Test your code manually with as many of the provided examples as possible.
+      > Contributions of automatic tests are welcome!
 
     - Pull in the master branch regularly to avoid merge conflicts later down the line.
 
@@ -150,7 +154,7 @@ The following instructions guide you through the creation of a pull request and 
       If you are working on a fork, you have to add the original repository as a remote first.
 
       ```
-      git remote add upstream git@github.com:FreeProving/free-compiler.git
+      git remote add upstream git@github.com:FreeProving/haskell-src-transformations.git
       ```
 
       Now you can run the following command to merge the latest changes to the master branch of the original repository on GitHub with the local clone of your fork.
@@ -164,7 +168,7 @@ The following instructions guide you through the creation of a pull request and 
 
  4. **Create a pull request**
 
-    Once you have implemented all changes and convinced yourself that everything is working as intend, you are ready to [submit a pull request][freec/pull-requests].
+    Once you have implemented all changes and convinced yourself that everything is working as intend, you are ready to [submit a pull request][haskell-src-transformations/pull-requests].
     If you are not fully done yet but want feedback on what you have done so far or need help for how to continue, you can also draft a pull request before.
 
     Provide the following information when submitting a pull request.
@@ -181,7 +185,7 @@ The following instructions guide you through the creation of a pull request and 
     Once you push your fix, another run of the pipeline is triggered.
     Repeat this process until all checks pass.
     If you believe that the checks are failing due to an error in the CI pipeline configuration, leave a comment under your pull request asking a maintainer for help.
-    A good first contact in those situations is [@just95](freec/Maintainers/just95).
+    A good first contact in those situations is [@just95](haskell-src-transformations/Maintainers/just95).
 
  6. **Wait for the pull request to be reviewed**
 
@@ -207,7 +211,7 @@ The following instructions guide you through the creation of a pull request and 
 
 ## Additional Software
 
-In addition to the required software listed in the [README][freec/README#required-software], you will need the following software to contribute code or documentation in the form of pull requests.
+In addition to the required software listed in the [README][haskell-src-transformations/README#required-software], you will need the following software to contribute code or documentation in the form of pull requests.
 
 ### Git
 
@@ -233,112 +237,13 @@ If you are not planning to make changes that involve the CI pipeline (i.e., modi
 In this section, we would like to give you a quick overview over what files are part of this repository, where they can be found and what's their purpose.
 This information should help you to quickly find files you are looking for and confidently decide where to place files you want to add.
 
- - `./`
-
-   The root directory of this repository is home to important Markdown documents and central configuration files (e.g., Cabal configuration files).
-   Avoid adding new files directly to the root directory if possible.
-   Instead, select an appropriate subdirectory from the list below or create a new subdirectory if the file really does not fit any of the existing categories.
-
-   If you create a new subdirectory, prefer singular (e.g., `example` not `examples`), lowercase (e.g., `example` not `Example`) and avoid abbreviations unless they are well known (e.g., `src` is a well known abbreviation of `source`).
-   When in doubt, fully spell out the name.
-
- - `./.github`
-
-   This directory contains GitHub related files such as issue and pull request templates as well as the configuration of the [CI pipeline](#the-ci-pipeline).
-   Usually only project maintainers have to edit files in this directory.
-   You can safely ignore it.
-
- - `./base`
-
-   This directory contains the Coq base library of the compiler.
-   The Coq base library is a collection of Coq files that are required by the generated code.
-   This includes the definition of the `Free` monad as well as the `Prelude` and `Test.QuickCheck` implementation.
-
- - `./doc`
-
-   This directory contains Markdown documentation of the compiler.
-   The documentation in this directory is mainly intended for users and not so much for developers of the compiler.
-   Documentation for more technical aspects such as *module interfaces* and the *intermediate representation* also belongs here.
-   Nevertheless, avoid providing implementation details and don't require knowledge about internal workings of the compiler in these documents.
-
-   Documents in this directory are named `[Title].md` where `[Title]` is the title of the Markdown document without spaces.
-
- - `./example`
-
-   This directory contains examples for Haskell modules that can (or cannot) be compiled with the Free Compiler.
-   Examples that don't compile should be commented out.
-   If multiple examples belong together, they should be placed in a common subdirectory.
-   There are two `.gitignore`d subdirectories `./example/transformed` and `./example/generated`.
-
-    + `./example/generated` is intended to be used as the `--output` directory of the compiler when testing the compiler.
-    + `./example/transformed` is used to dump the output of the [pattern matching compiler][doc/ExperimentalFeatures/PatternMatchingCompilation.md].
-
-   There are also Coq files (`.v` files) for proofs about translated examples.
-   In contrast to the Coq files placed by the compiler into `./example/generated`, they are not `.gitignore`d.
-   The `./example/_CoqProject` file, configures Coq such that the versioned Coq files can discover the generated Coq code and the base library.
-
- - `./img`
-
-   This directory contains images that are embedded into the README or other Markdown documents.
-   Usually you should avoid adding large binary files to Git repositories.
-   Frequent changes to files in this directory should be avoided and new files should only be added if necessary.
-
- - `./src`
-
-   This directory contains the Haskell source code of the compiler.
-   There are three subdirectories.
-
-    + `./src/exe` contains the code for the command line interface.
-    + `./src/lib` contains the code for the actual compiler.
-    + `./src/test` contains test cases for the modules located in `./src/lib`.
-       * By convention modules containing test cases have the same name as the module they are testing but the name `Tests` is appended.
-         For example, the module `FreeC.Pass.TypeInferencePassTests` contains test cases for the `FreeC.Pass.TypeInferencePass` module.
-       * For tests of modules with a common prefix, there is often a `Tests.hs` file that simply invokes all tests of all modules with that prefix.
-         For example, there is no `FreeC.IR` module but a `FreeC.IR.Tests` module that runs all tests for modules starting the the `FreeC.IR` prefix (e.g., `FreeC.IR.ReferenceTests`, `FreeC.IR.SubstTests`, etc.)
-       * The `Spec` module serves as an entry point or "main module" for the unit tests.
-         It invokes the unit tests in the other test modules.
-
-   Except for the main modules `Main` and `Spec`, the names of all modules that belong to the Free Compiler should start with the `FreeC` prefix.
-   Modules are organized hierarchically based on their function.
-   Common prefixes are listed below.
-
-    + `FreeC.Backend` contains modules that are concerned with the translation from the intermediate representation to a target language.
-    + `FreeC.Frontend` contains modules that are concerned with the traslation of an input language to the intermediate representation.
-      This includes a front end for the intermediate representation itself.
-    + `FreeC.IR` contains modules that define data types and operations for the intermediate representation such as the AST or commonly used operations on the AST.
-    + `FreeC.Monad` contains modules that define monads that are used throughout the compiler (e.g., for error reporting, or stateful operations).
-    + `FreeC.Monad.Class` contains type classes for monads.
-    + `FreeC.Pass` contains one module for each *compiler pass*.
-      A compiler pass is a transformation on the intermediate representation and environment.
-    + `FreeC.Test` contains modules for writing unit tests.
-    + `FreeC.Util` contains modules for utility functions.
-
-   Additionally, if there is a module `FreeC.X`, the prefix `FreeC.X` contains related modules.
-
- - `./tool`
-
-   This directory contains Bash scripts for common actions that need to be performed during development.
-   The scripts are intended to be executed from the root directory of this repository.
-
-   ```bash
-   ./tool/run.sh --help
-   ```
-
-   However, most scripts will make sure that they change into the correct working directory beforehand.
-   For example, the compiler runs in `/path/to/free-compiler` when invoked using the following command.
-
-   ```bash
-   /path/to/free-compiler/tool/run.sh ./example/Data/List.hs
-   ```
-
-   As a consequence `./example/Data/List.hs` refers to `/path/to/free-compiler/example/Data/List.hs` and not to `$(pwd)/example/Data/List.hs` in the example above.
-
-   If there are other directories named `tool` in this repository, the contained scripts are interned to to be executed from the directory containing the `tool` directory by convention.
+ > **TODO**: This section has not been migrated from the project wide contribution guidelines yet.
+ > Some information about the directory structure can be found in the [README][haskell-src-transformations/Readme].
 
 When adding files remember the following additional guidelines.
 
  - **Never commit generated code.**
-   If you want to give an example for the compiler's output, commit the original file and provide instructions for how to obtain the generated code.
+   If you want to give an example for the libraries's output, commit the original file and provide instructions for how to obtain the generated code.
    If generated Haskell source code is used (e.g., code generated by a parser generator or a similar tool), update the build scripts to generate the code but do not commit the output.
    Best practice is to add all output file types and build directories to the `.gitignore` file in the root directory or an appropriate subdirectory such that generated code is not committed accidentally.
 
@@ -356,13 +261,18 @@ When adding files remember the following additional guidelines.
 Automated tests occupy a central role in our development and review process.
 In this section we provide a quick overview over the general testing infrastructure, explain how you can run tests and give recommendations on how to write your own unit tests.
 
+> **Note**: This library does not include any unit tests yet.
+> Thus, special care must be taken when making any changes.
+> Test your code manually with as many of the provided examples as possible.
+> Contributions of automatic tests are welcome!
+
 ### Running Unit Tests
 
 If you make changes to the code, you should run the unit tests to make sure that everything still works.
 One option is to run the unit tests directly using Cabal via the following command.
 
 ```bash
-cabal new-run freec-unit-tests -- [options...]
+cabal new-run haskell-src-transformations-unit-tests -- [options...]
 ```
 
 However, we recommend using the `./tool/test.sh` script for running unit tests during development instead which passes some handy default arguments to Cabal and the test suite.
@@ -398,25 +308,25 @@ Use the `--help` option for more information.
 In addition to testing whether your changes do not break existing unit tests, we recommend writing your own test cases for every feature added or changed.
 
 We are using the [Hspec][software/Hspec] testing framework for writing unit tests in Haskell.
-For a module `FreeC.Foo` in `./src/lib` the module `FreeC.FooTests` in `./src/test/` contains the corresponding test cases.
+For a module `Foo` in `./src/lib` the module `FooTests` in `./src/test/` contains the corresponding test cases.
 Each test module should export one [`Spec`][software/Hspec/Spec] that [`describe`][software/Hspec/describe]s the tested module.
 In tests of large modules, consider structuring your test cases by providing more [`context`][software/Hspec/context].
 
 ```haskell
--- | This module contains tests for "FreeC.Foo".
+-- | This module contains tests for "Foo".
 
-module FreeC.FooTests
+module FooTests
   ( testFoo
   )
 where
 
 import           Test.Hspec
 
-import           FreeC.Foo
+import           Foo
 
--- | Test group for "FreeC.Foo" tests.
+-- | Test group for "Foo" tests.
 testFoo :: Spec
-testFoo = describe "FreeC.Foo" $ do
+testFoo = describe "Foo" $ do
   {- Write test cases here. -}
 ```
 
@@ -429,8 +339,7 @@ it "behaves as expected" $ do
   {- Implement test case here. -}
 ```
 
-Test cases should be self contained and have as little dependencies on other components of the compiler as possible.
-The modules starting with the [`FreeC.Test`][freec/haddock/tests] prefix provide common utility functions for writing test cases more compactly.
+Test cases should be self contained and have as little dependencies on other components of the library as possible.
 
 ### The CI Pipeline
 
@@ -442,10 +351,8 @@ The CI pipeline checks whether
 
  - the code has been formatted with [Brittany][software/Brittany]
  - [HLint][software/HLint] prints no hint that is not explicitly ignored in `.hlint.yaml`
- - the `freec` executable and the unit tests compile without warnings,
+ - the `haskell-src-transformations` executable and the unit tests compile without warnings,
  - all unit tests pass,
- - all examples in the `./example` directory compile using `freec --transform-pattern-matching` without errors,
- - Coq compiles the generated code as well as the example proofs without errors,
  - Haddock generates the documentation without errors and there
    are no out of scope references in the documentation.
 
@@ -457,31 +364,18 @@ If a pull request does not modify the source code, examples, Cabal configuration
 This is for example the case when only Markdown documents have been edited.
 The pull request can be merged as soon as all other requirements are met in this case.
 
-### Running The Pipeline Locally
-
-Since a full run of the CI pipeline can take a while, you should make sure that all checks that are performed by the CI pipeline pass on your machine before you push your changes.
-Luckily, you do not have to perform these checks manually, we provide a Bash script for that purpose.
-Run the following command to simulate a run of the pipeline locally.
-
-```bash
-./tool/full-test.sh
-```
-
-The script usually runs much faster since there is no overhead for creating test environments, uploading and downloading artifacts, initializing caches etc.
-If the script succeeds, it is not guaranteed that the CI pipeline will definitely pass, but it should catch the most common mistakes.
-
 ## Styleguides
 
 In order to maintain a consistent code style, we try to adhere to the following guidelines for formatting, structuring and organizing our code in various languages.
 
-If you are unsure how a piece of code should be formatted and the corresponding styleguide is not helping either, have a glance at existing source files to see how they handle similar situations, [open an issue][freec/issues] to start a discussion on the topic or [create a pull request][freec/pull-requests] to extend or clarify the styleguide in this document.
+If you are unsure how a piece of code should be formatted and the corresponding styleguide is not helping either, have a glance at existing source files to see how they handle similar situations, [open an issue][haskell-src-transformations/issues] to start a discussion on the topic or [create a pull request][haskell-src-transformations/pull-requests] to extend or clarify the styleguide in this document.
 Furthermore, there is probably a lot of code in this repository that violates the styleguides.
-Don't hesitate to format the code accordingly and submit a [pull request][freec/pull-requests].
+Don't hesitate to format the code accordingly and submit a [pull request][haskell-src-transformations/pull-requests].
 
 ### Languages without Styleguide
 
 We are using many different languages in this project.
-There is Haskell code, Coq code, Bash scripts, Cabal, YAML and TOML configuration files, Markdown documents and many more to come in the future.
+Among others there is Haskell code, Bash scripts, Cabal and YAML configuration files as well as Markdown documents.
 Unfortunately, there are not yet styleguides for all of those languages and for some there will probably never be one.
 As always, you are of course encouraged to extend this document.
 However, a compromise has to be found between the comprehensibility and completeness of this document.
@@ -649,7 +543,7 @@ The following is a list of additional guidelines that are not yet covered by the
    import           Control.Monad
    import           Data.List
 
-   import           FreeC.Environment
+   import           Algo
    ```
 
  - **Sort imports alphabetically**
@@ -1122,7 +1016,7 @@ Please make sure that you understand and agree with all what's is written here b
 
 ### Privacy
 
-The Free Compiler is developed and maintained on [GitHub][].
+The `haskell-src-transformations` package is developed and maintained on [GitHub][].
 In order to contribute to the FreeProving project, you have to create a GitHub account.
 By contributing to the FreeProving project, you agree that your contributions are published on GitHub.
 GitHub's [terms of privacy][GitHub/Privacy] apply.
@@ -1134,11 +1028,11 @@ If you chose to disclose personal information about your own person through your
 
 Please respect the privacy of other project members and contributors.
 If you have to mention another person, best practice is to use their GitHub user name instead of their real name even if you know them in person or their real name is publicly visible on their GitHub profile page.
-See our [Code of Conduct][freec/CODE_OF_CONDUCT] for more information.
+See our [Code of Conduct][haskell-src-transformations/CODE_OF_CONDUCT] for more information.
 
 ### License
 
-The Free Compiler is an open source project.
+The `haskell-src-transformations` package is an open source project.
 Its source code, associated documentation, configuration, toolchain and everything else you find in this repository is licensed under The 3-Clause BSD License.
 By contributing to the FreeProving project, you agree that your contributions will be licensed under the same license.
 
@@ -1148,45 +1042,35 @@ This includes that your contributions can be
  - used royalty free for private or commercial purposes
 
 by anyone provided that the requirements of the license regarding the attribution of the copyright holders are met.  
-See the [LICENSE][freec/LICENSE] file for details.
+See the [LICENSE][haskell-src-transformations/LICENSE] file for details.
 
-[doc/ExperimentalFeatures/PatternMatchingCompilation.md]:
-  https://github.com/FreeProving/free-compiler/blob/master/doc/ExperimentalFeatures/PatternMatchingCompilation.md
-  "Free Compiler Documentation — Pattern Matching Compilation"
-
-[freec/CODE_OF_CONDUCT]:
-  https://github.com/FreeProving/free-compiler/blob/master/CODE_OF_CONDUCT.md
-  "Free Compiler — Code of Conduct"
-[freec/haddock]:
-  https://freeproving.github.io/free-compiler/docs/master
-  "Free Compiler — Haddock Documentation"
-[freec/haddock/tests]:
-  https://freeproving.github.io/free-compiler/docs/master/free-compiler/freec-unit-tests/
-  "Free Compiler Test Suite — Haddock Documentation"
-[freec/issues]:
-  https://github.com/FreeProving/free-compiler/issues
-  "Free Compiler — Issues"
-[freec/labels/bug]:
-  https://github.com/FreeProving/free-compiler/labels/bug
-  "Free Compiler — Issues — Bugs"
-[freec/labels/enhancement]:
-  https://github.com/FreeProving/free-compiler/labels/enhancement
-  "Free Compiler — Issues — Enhancements"
-[freec/labels/good-first-issue]:
-  https://github.com/FreeProving/free-compiler/labels/good%20first%20issue
-  "Free Compiler — Issues — Good First Issue"
-[freec/LICENSE]:
-  https://github.com/FreeProving/free-compiler/blob/master/LICENSE
-  "Free Compiler — License"
-[freec/Maintainers/just95]:
+[haskell-src-transformations/CODE_OF_CONDUCT]:
+  https://github.com/FreeProving/haskell-src-transformations/blob/master/CODE_OF_CONDUCT.md
+  "haskell-src-transformation — Code of Conduct"
+[haskell-src-transformations/issues]:
+  https://github.com/FreeProving/haskell-src-transformations/issues
+  "haskell-src-transformations — Issues"
+[haskell-src-transformations/labels/bug]:
+  https://github.com/FreeProving/haskell-src-transformations/labels/bug
+  "haskell-src-transformations — Issues — Bugs"
+[haskell-src-transformations/labels/enhancement]:
+  https://github.com/FreeProving/haskell-src-transformations/labels/enhancement
+  "haskell-src-transformations — Issues — Enhancements"
+[haskell-src-transformations/labels/good-first-issue]:
+  https://github.com/FreeProving/haskell-src-transformations/labels/good%20first%20issue
+  "haskell-src-transformations — Issues — Good First Issue"
+[haskell-src-transformations/LICENSE]:
+  https://github.com/FreeProving/haskell-src-transformations/blob/master/LICENSE
+  "haskell-src-transformations — License"
+[haskell-src-transformations/Maintainers/just95]:
   https://github.com/just95
-  "Free Compiler — Issues"
-[freec/README#required-software]:
-  https://github.com/FreeProving/free-compiler#required-software
-  "Free Compiler — Required Software"
-[freec/pull-requests]:
-  https://github.com/FreeProving/free-compiler/pulls
-  "Free Compiler — Pull Requests"
+  "haskell-src-transformations — Issues"
+[haskell-src-transformations/README#required-software]:
+  https://github.com/FreeProving/haskell-src-transformations#required-software
+  "haskell-src-transformations — Required Software"
+[haskell-src-transformations/pull-requests]:
+  https://github.com/FreeProving/haskell-src-transformations/pulls
+  "haskell-src-transformations — Pull Requests"
 
 [Git]:
   https://git-scm.com/
