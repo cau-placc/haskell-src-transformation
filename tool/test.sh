@@ -25,8 +25,8 @@ failure_report_file=".hspec-failure-report"
 # Run tests with cabal.
 # We use `new-run` instead of `new-test`, because Cabal 2.4 does not
 # support `--test-options` to be passed to the test.
-cabal new-run haskell-src-transformations-unit-tests \
-  --ghc-option -Wwarn --                             \
-  --failure-report="$failure_report_file"            \
-  --rerun-all-on-success                             \
+cabal new-run unit-tests                  \
+  --ghc-option -Wwarn --                  \
+  --failure-report="$failure_report_file" \
+  --rerun-all-on-success                  \
   "$@"

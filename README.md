@@ -6,45 +6,56 @@
 <!-- Short description -->
 This tool was implemented as part of a bachelor thesis (by Malte Clement at Kiel University) and should be considered as a __alpha version of a prototype__.
 
+## Table of Contents
+
+1. [Haskell to Haskell Transformation Tool](#haskell-to-haskell-transformation-tool)
+2. [Directory Structure](#directory-structure)
+3. [Getting Started](#getting-started)
+    - [Required Software](#required-software)
+    - [Executable Installation](#executable-installation)
+    - [Library Installation](#library-installation)
+4. [Usage](#usage)
+5. [Get Involved](#get-involved)
+6. [License](#license)
+
 # Haskell to Haskell Transformation Tool
 
 This is a tool to translate different language features of Haskell into simpler expressions.
 
-* It translates pattern matching on left hand sides into explicit pattern matching on right sides using Wadlers Algorithm for compiling pattern matching.
+ - It translates pattern matching on left hand sides into explicit pattern matching on right sides using Wadlers Algorithm for compiling pattern matching.
 
-* Guards are transformed into `case`-expression using their semantics as described in the Haskell-report.
+ - Guards are transformed into `case`-expression using their semantics as described in the Haskell-report.
 
-* Partially defined functions are completed such that pattern mismatches do not occur.
+ - Partially defined functions are completed by inserting alternatives whose right-hand side is `undefined` such that pattern matching failures are handled explicitly.
 
-## Repository
+## Directory Structure
 
 The repository is structured as follows.
 
-* `src` contains the source code of the project
+ - `src` contains the source code of the project
 
-  * `src/exe` contains modules for the command line interface
-  * `src/lib` contains modules for the conde transformation library
-  * `src/test` contains modules that have been translated to test certain features
+    + `src/exe` contains modules for the command line interface
+    + `src/lib` contains modules for the code transformation library
+    + `src/test` contains modules that have been translated to test certain features
 
-* `example` contains some examples that have been transformed by hand using Wadler's algorithm.
+ - `example` contains some examples that have been transformed by hand using Wadler's algorithm.
 
-  Additionally, it contains some special examples that were used to test the [haskell-to-coq-compiler](https://git.informatik.uni-kiel.de/stu203400/haskell-to-coq-compiler)
+  Additionally, it contains some special examples that were used to test the [Free Compiler](free-compiler)
 
-* `tool` contains Bash scripts that are used during development and for testing.
+ - `tool` contains Bash scripts that are used during development and for testing.
 
+## Getting Started
 
-## Required Software
+### Required Software
 
 The tool is written in Haskell and uses Cabal to manage the dependencies.
 To build it, the GHC and Cabal are required.
 The tool has been tested with the following software versions.
 
- - [GHC](https://www.haskell.org/ghc/), version  8.6.5
- - [Cabal](https://www.haskell.org/cabal/), version 2.4.1.0
+ - [GHC][software/ghc], version  8.6.5
+ - [Cabal][software/cabal], version 2.4.1.0
 
-## Installation
-
-### Executable
+### Executable Installation
 
 In order to install the command line interface navigate to the root directory of the project and run
 
@@ -58,7 +69,7 @@ You can also run the executable directly without installing it first.
 cabal new-run exe:haskell-src-transformations -- [options...]
 ```
 
-### Library
+### Library Installation
 
 The library provided by this package is not yet available on Hackage.
 In order to use the Haskell code transformations in your own project, add the following stanza to your `cabal.project` file.
@@ -81,3 +92,32 @@ haskell-src-transformations -I [InputFile]
 The generated code is printed to the console. If you want to specify the output directory use the `-o` flag.
 
 For more information on the different flags you can use the `-h` flag.
+
+## Get Involved
+
+Feature requests, enhancement proposals, bug reports, pull requests and all other contributions are welcome!  
+Have a look at our [contributing guidelines][guidelines/CONTRIBUTING] for more information on how to contribute.
+
+## License
+
+The Free Compiler is licensed under The 3-Clause BSD License.  
+See the [LICENSE][haskell-src-transformations/LICENSE] file for details.
+
+[haskell-src-transformations/LICENSE]:
+  https://github.com/FreeProving/haskell-src-transformations/blob/master/LICENSE
+  "haskell-src-transformations — The 3-Clause BSD License"
+
+[free-compiler]:
+  https://github.com/FreeProving/free-compiler
+  "Free Compiler"
+
+[guidelines/CONTRIBUTING]:
+  https://github.com/FreeProving/guidelines/blob/master/CONTRIBUTING.md
+  "Free Compiler — Contribution Guidelines"
+
+[software/ghc]:
+  https://www.haskell.org/ghc/
+  "The Glasgow Haskell Compiler"
+[software/cabal]:
+  https://www.haskell.org/cabal/
+  "Common Architecture for Building Applications and Libraries"
