@@ -34,13 +34,12 @@ about: Create a report to help us improve
 <!--
   Please include the Hash of the Git commit of the library you are using.
   You can get this information from running `git rev-parse HEAD` on the command line.
-  Also, please include the versions of GHC, Cabal and Coq as well as the name and version of the operating system (OS) you are running.
+  Also, please include the versions of GHC and Cabal as well as the name and version of the operating system (OS) you are running.
 -->
 
  - Git commit: <!-- Copy and paste the output of `git rev-parse HEAD`. -->
  - `ghc --version`: <!-- Copy and pate the version only. -->
  - `cabal --version`: <!-- Copy and pate the version only. -->
- - `coqc --version`: <!-- Copy and pate the version only. -->
  - OS: <!-- Name and version of your operating system. -->
 
 ### Known workarounds
