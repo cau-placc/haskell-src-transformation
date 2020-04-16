@@ -19,7 +19,6 @@ on:
   push:
     branches:
     - 'master'
-    - 'contribution-guidelines'
     paths:
     - 'haskell-src-transformations.cabal'
     - 'src/**'
