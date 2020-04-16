@@ -11,7 +11,7 @@
 # Before local changes are pushed, all warnings should be fixed. Otherwise,
 # the CI pipeline will fail.
 
-# Change into the libraries's root directory.
+# Change into the library's root directory.
 script=$(realpath $0)
 script_dir=$(dirname "$script")
 root_dir=$(dirname "$script_dir")
