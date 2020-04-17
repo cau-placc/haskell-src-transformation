@@ -55,7 +55,7 @@ executable haskell-src-transformations
                     , haskell-src-transformations
 
 -- Build configuration for the unit tests of the library.
-test-suite unit-tests
+test-suite haskell-src-transformations-unit-tests
   import:             deps
 
   type:               exitcode-stdio-1.0

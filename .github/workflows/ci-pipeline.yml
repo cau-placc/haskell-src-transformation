@@ -122,9 +122,9 @@ jobs:
       run: cabal new-build exe:haskell-src-transformations
 
     - name: Build command line interface dependencies
-      run: cabal new-build unit-tests --dependencies-only
+      run: cabal new-build haskell-src-transformations-unit-tests --dependencies-only
     - name: Build command line interface
-      run: cabal new-build unit-tests
+      run: cabal new-build haskell-src-transformations-unit-tests
 
     # Upload the compiler executable artifact.
     - name: Copy executable to build directory
@@ -192,9 +192,9 @@ jobs:
           ${{ matrix.os }}-dist-newstyle-
     ### END SETUP CACHE #######################################################
     - name: Build unit tests
-      run: cabal new-build unit-tests
+      run: cabal new-build haskell-src-transformations-unit-tests
     - name: Run unit tests
-      run: cabal new-run unit-tests
+      run: cabal new-run haskell-src-transformations-unit-tests
 
   #############################################################################
   # Documentation                                                             #
