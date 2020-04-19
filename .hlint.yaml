@@ -1,0 +1,10 @@
+# HLint configuration file
+# https://github.com/ndmitchell/hlint
+##########################
+
+# Record patterns don't improve the readability of the code necessarily.
+- ignore: {name: "Use record patterns"}
+
+# In the renaming module substitutions are modeled as functions.
+# The usage of lambda abstractions actually improves the readability.
+- ignore: {name: "Redundant lambda", within: ["Renaming"]}

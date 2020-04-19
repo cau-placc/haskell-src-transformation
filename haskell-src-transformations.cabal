@@ -1,79 +1,68 @@
+cabal-version:       2.4
+
+-- Package name, version and description.
 name:                haskell-src-transformations
-
--- The package version.  See the Haskell package versioning policy (PVP)
--- for standards guiding when and how versions should be incremented.
--- https://wiki.haskell.org/Package_versioning_policy
--- PVP summary:      +-+------- breaking API changes
---                   | | +----- non-breaking API additions
---                   | | | +--- code changes with no API change
 version:             0.1.0.0
-
--- A short (one-line) description of the package.
--- synopsis:
-
--- A longer description of the package.
+category:            Language
+-- synopsis: TODO A short (one-line) description of the package.
 -- description:
+--   TODO A longer description of the package.
 
--- The license under which the package is released.
-license:             BSD3
-
--- The file containing the license text.
+-- Copyright information.
+license:             BSD-3-Clause
 license-file:        LICENSE
+copyright:           (c) 2019, Kiel University
 
--- The package author(s).
-author:              Malte Clement <stu204333@mail.uni-kiel.de>, Jan Christiansen <jan.christiansen@hs-flensburg.de>
-
--- An email address to which users can send suggestions, bug reports, and
--- patches.
+author:              Malte Clement <stu204333@mail.uni-kiel.de>
+                   , Jan Christiansen <jan.christiansen@hs-flensburg.de>
 maintainer:          jan.christiansen@hs-flensburg.de
 
--- A copyright notice.
--- copyright:
-
-category:            Language
-
+-- Build configuration.
 build-type:          Simple
 
--- Constraint on the version of Cabal needed to build this package.
-cabal-version:       >=1.10
-
-
-library
-  -- Modules exported by the library.
-  exposed-modules:     Application,
-                       Algo,
-                       GuardElimination,
-                       CaseCompletion,
-                       FreshVars
-
-  -- Modules included in this library but not exported.
-  other-modules:       Renaming
-
-  -- LANGUAGE extensions used by modules in this package.
-  -- other-extensions:
-
-  -- Other library packages from which modules are imported.
-  build-depends:       filepath >= 1.4 && < 1.5,
-                       mtl >= 2.2 && < 2.3,
-                       haskell-src-exts >= 1.23 && < 1.24,
-                       base >=4.12 && < 4.13
-
-  -- Directories containing source files.
-  hs-source-dirs:      src
+-- Common settings and dependencies that are used by all stanzas below.
+common deps
+  build-depends:       base             >= 4.12 && < 4.13
+                     , haskell-src-exts >= 1.23 && < 1.24
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
   ghc-options:         -Wall
 
+-- Build configuration for the actual `haskell-src-transformations` library.
+library
+  import:             deps
 
-test-suite tests
+  hs-source-dirs:     src/lib
+  exposed-modules:    Application
+                    , Algo
+                    , GuardElimination
+                    , CaseCompletion
+                    , FreshVars
+  other-modules:      Renaming
+
+  build-depends:      mtl               >= 2.2 && < 2.3
+
+-- Build configuration for the command line interface.
+executable haskell-src-transformations
+  import:             deps
+
+  -- The @Main@ module is currently the only module of the command
+  -- line interface.
+  main-is:            Main.hs
+  hs-source-dirs:     src/exe
+  build-depends:      filepath          >= 1.4 && < 1.5
+                    , haskell-src-transformations
+
+-- Build configuration for the unit tests of the library.
+test-suite haskell-src-transformations-unit-tests
+  import:             deps
+
   type:               exitcode-stdio-1.0
   hs-source-dirs:     src/test
-  main-is:            Test.hs
-    -- other-modules:
-  build-depends:      base,
-                      hspec,
-                      QuickCheck
-
-  default-language:   Haskell2010
-  ghc-options:        -Wall
+  main-is:            Spec.hs
+  ghc-options:        -main-is Spec
+  -- other-modules: TODO add unit tests
+  build-depends:      base
+                    , hspec
+                    , QuickCheck

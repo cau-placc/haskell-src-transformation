@@ -1,0 +1,18 @@
+### Haskell ###
+dist
+dist-*
+cabal-dev
+*.o
+*.hi
+.cabal-sandbox/
+cabal.sandbox.config
+*.prof
+*.aux
+*.hp
+.stack-work/
+cabal.project.local
+.ghc.environment.*
+.hspec-failure-report
+
+### MacOS ###
+.DS_Store
