@@ -117,14 +117,14 @@ jobs:
       run: cabal new-build lib:haskell-src-transformations
 
     - name: Build unit test dependencies
-      run: cabal new-build exe:haskell-src-transformations --dependencies-only
+      run: cabal new-build haskell-src-transformations-unit-tests --dependencies-only
     - name: Build unit tests
-      run: cabal new-build exe:haskell-src-transformations
+      run: cabal new-build haskell-src-transformations-unit-tests
 
     - name: Build command line interface dependencies
-      run: cabal new-build haskell-src-transformations-unit-tests --dependencies-only
+      run: cabal new-build exe:haskell-src-transformations --dependencies-only
     - name: Build command line interface
-      run: cabal new-build haskell-src-transformations-unit-tests
+      run: cabal new-build exe:haskell-src-transformations
 
     # Upload the compiler executable artifact.
     - name: Copy executable to build directory
