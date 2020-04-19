@@ -78,7 +78,7 @@ In order to use the Haskell code transformations in your own project, add the fo
 source-repository-package
   type: git
   location: git://github.com/FreeProving/haskell-src-transformations.git
-  tag: v0.1.0.0
+  tag: v0.1.1.0
 ```
 
 ## Usage
@@ -113,7 +113,7 @@ See the [LICENSE][haskell-src-transformations/LICENSE] file for details.
 
 [guidelines/CONTRIBUTING]:
   https://github.com/FreeProving/guidelines/blob/master/CONTRIBUTING.md
-  "Free Compiler — Contribution Guidelines"
+  "Contributing Guidelines of the FreeProving project"
 
 [software/ghc]:
   https://www.haskell.org/ghc/

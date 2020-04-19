@@ -2,7 +2,7 @@ cabal-version:       2.4
 
 -- Package name, version and description.
 name:                haskell-src-transformations
-version:             0.1.0.0
+version:             0.1.1.0
 category:            Language
 -- synopsis: TODO A short (one-line) description of the package.
 -- description:
