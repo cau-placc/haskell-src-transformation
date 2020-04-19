@@ -127,10 +127,18 @@ jobs:
       run: cabal new-build exe:haskell-src-transformations
 
     # Upload the compiler executable artifact.
+    # If there are cached builds of previous versions, the `find` command
+    # without `-path` option would return all of the cached executables.
+    # We are only interested in the executable for the version specified
+    # the Cabal configuration file.
     - name: Copy executable to build directory
       run: |
+        pkg_name="haskell-src-transformations"
+        exe_name="haskell-src-transformations"
+        pkg_version=$(cat "$pkg_name.cabal" | grep -P '^version:' | awk '{print $2}')
+        exe_path=$(find dist-newstyle -path "*/$pkg_name-$pkg_version/*" -name "$exe_name" -type f)
         mkdir -p ./build/bin
-        cp $(find dist-newstyle -name haskell-src-transformations -type f) ./build/bin/haskell-src-transformations
+        cp "$exe_path" "./build/bin/$exe_name"
     - name: Upload executable
       uses: actions/upload-artifact@v1
       with:
