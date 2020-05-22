@@ -1,4 +1,4 @@
-# haskell-src-transformation
+﻿# haskell-src-transformation
 
 <!-- Badges -->
 ![CI Pipeline](https://github.com/FreeProving/haskell-src-transformations/workflows/CI%20Pipeline/badge.svg)
@@ -32,15 +32,14 @@ This is a tool to translate different language features of Haskell into simpler 
 
 The repository is structured as follows.
 
- - `src` contains the source code of the project
+ - `src` contains the source code of the project.
 
-    + `src/exe` contains modules for the command line interface
-    + `src/lib` contains modules for the code transformation library
-    + `src/test` contains modules that have been translated to test certain features
+    + `src/exe` contains modules for the command line interface.
+    + `src/lib` contains modules for the code transformation library.
+    + `src/test` contains modules that have been translated to test certain features.
 
- - `example` contains some examples that have been transformed by hand using Wadler's algorithm.
-
-  Additionally, it contains some special examples that were used to test the [Free Compiler](free-compiler)
+ - `example` contains some examples that have been transformed by hand using Wadler's algorithm. \
+  Additionally, it contains some special examples that were used to test the [Free Compiler](free-compiler).
 
  - `tool` contains Bash scripts that are used during development and for testing.
 
@@ -57,7 +56,7 @@ The tool has been tested with the following software versions.
 
 ### Executable Installation
 
-In order to install the command line interface navigate to the root directory of the project and run
+In order to install the command line interface, navigate to the root directory of the project and run
 
 ```bash
 cabal new-install exe:haskell-src-transformations
@@ -89,7 +88,7 @@ To transform a Haskell module, install the command line interface as described a
 haskell-src-transformations -I [InputFile]
 ```
 
-The generated code is printed to the console. If you want to specify the output directory use the `-o` flag.
+The generated code is printed to the console. If you want to specify the output directory, use the `-o` flag.
 
 For more information on the different flags you can use the `-h` flag.
 
