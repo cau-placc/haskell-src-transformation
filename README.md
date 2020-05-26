@@ -1,4 +1,4 @@
-﻿# haskell-src-transformation
+﻿# haskell-src-transformations
 
 <!-- Badges -->
 ![CI Pipeline](https://github.com/FreeProving/haskell-src-transformations/workflows/CI%20Pipeline/badge.svg)
